@@ -18,6 +18,8 @@
 	SEL action_; // checkmarkCellGroup:group selectedCell:cell
 }
 
+- (id)initWithTarget:(id)target action:(SEL)action;
+
 @property (nonatomic, readonly) NSArray * cells;
 @property (nonatomic, assign) YXCheckmarkCell * selectedCell;
 

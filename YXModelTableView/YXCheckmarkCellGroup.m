@@ -18,10 +18,16 @@
 
 @implementation YXCheckmarkCellGroup
 
+- (id)initWithTarget:(id)target action:(SEL)action {
+    if ((self = [super init])) {
+        self.target = target;
+        self.action = action;
+    }
+    return self;
+}
 
 #pragma mark -
 #pragma mark Public interface
-
 
 - (NSArray *)cells {
 	return [NSArray arrayWithArray:cells_];
