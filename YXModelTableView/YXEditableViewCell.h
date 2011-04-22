@@ -13,7 +13,7 @@
 @interface YXEditableViewCell : UITableViewCell <UITextFieldDelegate> {
 @private
 	UITextField * textField_;
-	UILabel * valueSuffixLabel_;
+//	UILabel *valueSuffixLabel_;
 	id target_;
 	SEL action_;
 }

@@ -19,6 +19,8 @@
 @property (nonatomic, readonly) NSString * reuseIdentifier;
 @property (nonatomic, retain) id userInfo;
 @property (nonatomic, retain) UIImage * image;
+@property (nonatomic, readonly) CGFloat height;
+@property (nonatomic) UITableViewCellStyle style;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 

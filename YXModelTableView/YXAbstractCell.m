@@ -11,10 +11,8 @@
 
 @implementation YXAbstractCell
 
-
 #pragma mark -
-#pragma mark Object lifecycle 
-
+#pragma mark Object lifecycle  
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super init];
@@ -42,6 +40,10 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 }
 
+- (CGFloat)height {
+    return 44.0f;
+}
+
 
 #pragma mark -
 #pragma mark Memory management
@@ -50,6 +52,7 @@
 @synthesize reuseIdentifier = reuseIdentifier_;
 @synthesize userInfo = userInfo_;
 @synthesize image = image_;
+@synthesize height, style;
 
 - (void)dealloc {
 	[reuseIdentifier_ release];

@@ -1,0 +1,343 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CA296341361F6BC00EF6471 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA296331361F6BC00EF6471 /* UIKit.framework */; };
+		6CA296361361F6BC00EF6471 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA296351361F6BC00EF6471 /* Foundation.framework */; };
+		6CA296381361F6BC00EF6471 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA296371361F6BC00EF6471 /* CoreGraphics.framework */; };
+		6CA2963E1361F6BC00EF6471 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6CA2963C1361F6BC00EF6471 /* InfoPlist.strings */; };
+		6CA296411361F6BC00EF6471 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA296401361F6BC00EF6471 /* main.m */; };
+		6CA296441361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA296431361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.m */; };
+		6CA296471361F6BC00EF6471 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CA296451361F6BC00EF6471 /* MainWindow.xib */; };
+		6CA2964A1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA296491361F6BC00EF6471 /* YXModelStaticViewDemoViewController.m */; };
+		6CA2964D1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CA2964B1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.xib */; };
+		6CA296AB1361F73F00EF6471 /* libYXModelTableView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA296A71361F72E00EF6471 /* libYXModelTableView.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6CA296A61361F72E00EF6471 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6CA296A21361F72E00EF6471 /* YXModelTableView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6CA296141361F69500EF6471;
+			remoteInfo = YXModelTableView;
+		};
+		6CA296A91361F73600EF6471 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6CA296A21361F72E00EF6471 /* YXModelTableView.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6CA296131361F69500EF6471;
+			remoteInfo = YXModelTableView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6CA2962F1361F6BC00EF6471 /* YXModelStaticViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YXModelStaticViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CA296331361F6BC00EF6471 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6CA296351361F6BC00EF6471 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6CA296371361F6BC00EF6471 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6CA2963B1361F6BC00EF6471 /* YXModelStaticViewDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YXModelStaticViewDemo-Info.plist"; sourceTree = "<group>"; };
+		6CA2963D1361F6BC00EF6471 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6CA2963F1361F6BC00EF6471 /* YXModelStaticViewDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YXModelStaticViewDemo-Prefix.pch"; sourceTree = "<group>"; };
+		6CA296401361F6BC00EF6471 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6CA296421361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YXModelStaticViewDemoAppDelegate.h; sourceTree = "<group>"; };
+		6CA296431361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YXModelStaticViewDemoAppDelegate.m; sourceTree = "<group>"; };
+		6CA296461361F6BC00EF6471 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		6CA296481361F6BC00EF6471 /* YXModelStaticViewDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YXModelStaticViewDemoViewController.h; sourceTree = "<group>"; };
+		6CA296491361F6BC00EF6471 /* YXModelStaticViewDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YXModelStaticViewDemoViewController.m; sourceTree = "<group>"; };
+		6CA2964C1361F6BC00EF6471 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/YXModelStaticViewDemoViewController.xib; sourceTree = "<group>"; };
+		6CA296A21361F72E00EF6471 /* YXModelTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = YXModelTableView.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6CA2962C1361F6BC00EF6471 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CA296AB1361F73F00EF6471 /* libYXModelTableView.a in Frameworks */,
+				6CA296341361F6BC00EF6471 /* UIKit.framework in Frameworks */,
+				6CA296361361F6BC00EF6471 /* Foundation.framework in Frameworks */,
+				6CA296381361F6BC00EF6471 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6CA296241361F6BC00EF6471 = {
+			isa = PBXGroup;
+			children = (
+				6CA296391361F6BC00EF6471 /* YXModelStaticViewDemo */,
+				6CA296321361F6BC00EF6471 /* Frameworks */,
+				6CA296301361F6BC00EF6471 /* Products */,
+				6CA296A21361F72E00EF6471 /* YXModelTableView.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		6CA296301361F6BC00EF6471 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CA2962F1361F6BC00EF6471 /* YXModelStaticViewDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6CA296321361F6BC00EF6471 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6CA296331361F6BC00EF6471 /* UIKit.framework */,
+				6CA296351361F6BC00EF6471 /* Foundation.framework */,
+				6CA296371361F6BC00EF6471 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6CA296391361F6BC00EF6471 /* YXModelStaticViewDemo */ = {
+			isa = PBXGroup;
+			children = (
+				6CA296421361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.h */,
+				6CA296431361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.m */,
+				6CA296451361F6BC00EF6471 /* MainWindow.xib */,
+				6CA296481361F6BC00EF6471 /* YXModelStaticViewDemoViewController.h */,
+				6CA296491361F6BC00EF6471 /* YXModelStaticViewDemoViewController.m */,
+				6CA2964B1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.xib */,
+				6CA2963A1361F6BC00EF6471 /* Supporting Files */,
+			);
+			path = YXModelStaticViewDemo;
+			sourceTree = "<group>";
+		};
+		6CA2963A1361F6BC00EF6471 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6CA2963B1361F6BC00EF6471 /* YXModelStaticViewDemo-Info.plist */,
+				6CA2963C1361F6BC00EF6471 /* InfoPlist.strings */,
+				6CA2963F1361F6BC00EF6471 /* YXModelStaticViewDemo-Prefix.pch */,
+				6CA296401361F6BC00EF6471 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6CA296A31361F72E00EF6471 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CA296A71361F72E00EF6471 /* libYXModelTableView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6CA2962E1361F6BC00EF6471 /* YXModelStaticViewDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CA296501361F6BC00EF6471 /* Build configuration list for PBXNativeTarget "YXModelStaticViewDemo" */;
+			buildPhases = (
+				6CA2962B1361F6BC00EF6471 /* Sources */,
+				6CA2962C1361F6BC00EF6471 /* Frameworks */,
+				6CA2962D1361F6BC00EF6471 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CA296AA1361F73600EF6471 /* PBXTargetDependency */,
+			);
+			name = YXModelStaticViewDemo;
+			productName = YXModelStaticViewDemo;
+			productReference = 6CA2962F1361F6BC00EF6471 /* YXModelStaticViewDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6CA296261361F6BC00EF6471 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Dizzy Technology";
+			};
+			buildConfigurationList = 6CA296291361F6BC00EF6471 /* Build configuration list for PBXProject "YXModelStaticViewDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6CA296241361F6BC00EF6471;
+			productRefGroup = 6CA296301361F6BC00EF6471 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 6CA296A31361F72E00EF6471 /* Products */;
+					ProjectRef = 6CA296A21361F72E00EF6471 /* YXModelTableView.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				6CA2962E1361F6BC00EF6471 /* YXModelStaticViewDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		6CA296A71361F72E00EF6471 /* libYXModelTableView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libYXModelTableView.a;
+			remoteRef = 6CA296A61361F72E00EF6471 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6CA2962D1361F6BC00EF6471 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CA2963E1361F6BC00EF6471 /* InfoPlist.strings in Resources */,
+				6CA296471361F6BC00EF6471 /* MainWindow.xib in Resources */,
+				6CA2964D1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6CA2962B1361F6BC00EF6471 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CA296411361F6BC00EF6471 /* main.m in Sources */,
+				6CA296441361F6BC00EF6471 /* YXModelStaticViewDemoAppDelegate.m in Sources */,
+				6CA2964A1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6CA296AA1361F73600EF6471 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = YXModelTableView;
+			targetProxy = 6CA296A91361F73600EF6471 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6CA2963C1361F6BC00EF6471 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CA2963D1361F6BC00EF6471 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6CA296451361F6BC00EF6471 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CA296461361F6BC00EF6471 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		6CA2964B1361F6BC00EF6471 /* YXModelStaticViewDemoViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CA2964C1361F6BC00EF6471 /* en */,
+			);
+			name = YXModelStaticViewDemoViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6CA2964E1361F6BC00EF6471 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6CA2964F1361F6BC00EF6471 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		6CA296511361F6BC00EF6471 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YXModelStaticViewDemo/YXModelStaticViewDemo-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/YXModelTableView";
+				INFOPLIST_FILE = "YXModelStaticViewDemo/YXModelStaticViewDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6CA296521361F6BC00EF6471 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YXModelStaticViewDemo/YXModelStaticViewDemo-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/YXModelTableView";
+				INFOPLIST_FILE = "YXModelStaticViewDemo/YXModelStaticViewDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6CA296291361F6BC00EF6471 /* Build configuration list for PBXProject "YXModelStaticViewDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CA2964E1361F6BC00EF6471 /* Debug */,
+				6CA2964F1361F6BC00EF6471 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CA296501361F6BC00EF6471 /* Build configuration list for PBXNativeTarget "YXModelStaticViewDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CA296511361F6BC00EF6471 /* Debug */,
+				6CA296521361F6BC00EF6471 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6CA296261361F6BC00EF6471 /* Project object */;
+}

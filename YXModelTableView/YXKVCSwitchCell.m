@@ -40,7 +40,7 @@
 	cell.object = object;
 	cell.key = key;
 
-	return cell;
+	return [cell autorelease];
 }
 
 - (NSNumber *)initialValue:(YXKVCSwitchCell *)cell {

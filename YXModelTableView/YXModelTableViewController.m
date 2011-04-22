@@ -96,6 +96,10 @@
 	return newCell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [[self modelCellAtIndexPath:indexPath] height];
+}
+
 
 #pragma mark -
 #pragma mark Table view delegate 

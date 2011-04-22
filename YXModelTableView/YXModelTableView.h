@@ -22,3 +22,4 @@
 #import "YXEditableCell.h"
 #import "YXKVCValueCell.h"
 #import "YXStaticValueCell.h"
+#import "YXStaticLabelCell.h"
