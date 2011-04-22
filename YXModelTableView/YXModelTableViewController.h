@@ -10,10 +10,10 @@
 #import "YXModelTableView.h"
 
 @interface YXModelTableViewController : UITableViewController {
-@private
-	NSArray * sections_;
 }
 
-@property (nonatomic, copy) NSArray * sections;
+@property (nonatomic, copy) NSArray *sections;
+@property (nonatomic, copy) NSArray *utilities; // Work around having to retain a YXCheckmarkCellGroup
+
 
 @end

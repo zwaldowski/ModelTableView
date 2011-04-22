@@ -10,6 +10,7 @@
 
 @implementation YXModelTableViewController
 
+@synthesize sections, utilities;
 
 #pragma mark -
 #pragma mark Initialization
@@ -18,7 +19,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-		sections_ = [[NSArray alloc] init];
+		sections = [[NSArray alloc] init];
     }
     return self;
 }
@@ -137,13 +138,9 @@
     [super viewDidUnload];
 }
 
-
-@synthesize sections = sections_;
-
-
 - (void)dealloc {
-	[sections_ release];
-
+	[sections release];
+    self.utilities = nil;
     [super dealloc];
 }
 
