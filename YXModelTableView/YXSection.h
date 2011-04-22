@@ -28,8 +28,6 @@
 @property (nonatomic, retain) UIView *footerView;
 @property (nonatomic, retain) UIView *headerView;
 
-@property (nonatomic, readonly) NSArray * cells;
-
 - (id)init;
 - (id)initWithHeader:(NSString *)header footer:(NSString *)footer;
 
@@ -38,5 +36,8 @@
 
 - (void)addCell:(YXAbstractCell *)cell;
 - (void)removeCell:(YXAbstractCell *)cell;
+
+- (YXAbstractCell *)cellAtIndex:(NSInteger)index;
+- (NSInteger)cellCount;
 
 @end

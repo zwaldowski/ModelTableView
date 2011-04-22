@@ -41,11 +41,6 @@
 #pragma mark -
 #pragma mark Public interface
 
-
-- (NSArray *)cells {
-	return [[cells_ copy] autorelease];
-}
-
 - (void)addCell:(YXAbstractCell *)cell {
 	[cells_ addObject:cell];
 }
@@ -54,6 +49,13 @@
 	[cells_ removeObject:cell];
 }
 
+- (YXAbstractCell *)cellAtIndex:(NSInteger)index {
+    return [cells_ objectAtIndex:index];
+}
+
+- (NSInteger)cellCount {
+    return [cells_ count];
+}
 
 #pragma mark -
 #pragma mark Memory management

@@ -35,8 +35,7 @@
 
 - (YXAbstractCell *)modelCellAtIndexPath:(NSIndexPath *)indexPath {
 	YXSection * section = [self.sections objectAtIndex:indexPath.section];
-	YXAbstractCell * cell = [section.cells objectAtIndex:indexPath.row];
-	return cell;
+	return [section cellAtIndex:indexPath.row];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -45,7 +44,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
 	YXSection * section = [self.sections objectAtIndex:sectionIndex];
-	return [section.cells count];
+	return [section cellCount];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)sectionIndex {
@@ -98,10 +97,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     YXAbstractCell *cell = [self modelCellAtIndexPath:indexPath];
+    CGFloat customHeight = 0.0f;
     if ([cell respondsToSelector:@selector(height)]) {
-        return [cell height];
+        customHeight = [cell height];
     }
-    return 44.0f;
+    return (customHeight > 44.0f) ? customHeight : 44.0f;
 }
 
 
