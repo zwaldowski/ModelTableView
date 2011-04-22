@@ -3,7 +3,8 @@ YXModelTableViews
 
 Using this mini-framework you can simpify creation of settings-like/card-like table views. All you need is to subclass your view controller from `YXModelTableViewController` and do the following:
 
-```	YXSection * sectionA = [[YXSection alloc] initWithHeader:@"Section A" footer:nil];
+```
+	YXSection * sectionA = [[YXSection alloc] initWithHeader:@"Section A" footer:nil];
 
 	// Just a cell with a title and switch control at the right. You provice two
 	// callbacks: the first returns an initial value and the second is called
@@ -47,7 +48,8 @@ Using this mini-framework you can simpify creation of settings-like/card-like ta
 												   selector:@selector(buttonCellTapped:)]];
 
 
-	[self setSections:[NSArray arrayWithObjects:sectionA, sectionB, sectionC, nil]];```
+	[self setSections:[NSArray arrayWithObjects:sectionA, sectionB, sectionC, nil]];
+```
 
 It's recommended to do all this in `viewDidLoad:`.  If you do this anywhere else, it's usually good to call `[self.tableView reloadData]` since `setSections:` doesn't do that.
 
