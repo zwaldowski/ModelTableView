@@ -11,20 +11,14 @@
 
 @interface YXCheckmarkCellGroup : NSObject {
 @private
-	NSMutableArray * cells_;
-	YXCheckmarkCell * selectedCell_;
-	
-	id target_;
-	SEL action_; // checkmarkCellGroup:group selectedCell:cell
+	NSMutableArray *_cells;
 }
 
 - (id)initWithTarget:(id)target action:(SEL)action;
 
-@property (nonatomic, readonly) NSArray * cells;
-@property (nonatomic, assign) YXCheckmarkCell * selectedCell;
-
+@property (nonatomic, assign) YXCheckmarkCell *selectedCell;
 @property (nonatomic, assign) id target;
-@property (nonatomic, assign) SEL action;
+@property (nonatomic, assign) SEL action; // checkmarkCellGroup:group selectedCell:cell
 
 - (void)addCell:(YXCheckmarkCell *)cell setSelected:(BOOL)selected;
 - (void)removeCell:(YXCheckmarkCell *)cell;

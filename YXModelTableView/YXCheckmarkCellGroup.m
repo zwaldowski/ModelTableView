@@ -29,10 +29,6 @@
 #pragma mark -
 #pragma mark Public interface
 
-- (NSArray *)cells {
-	return [NSArray arrayWithArray:cells_];
-}
-
 - (void)addCell:(YXCheckmarkCell *)cell setSelected:(BOOL)selected {
 	NSAssert(cell != nil, @"");
 	
@@ -105,10 +101,10 @@
 }
 
 - (NSMutableArray *)mutableCells {
-	if (cells_ == nil) {
-		cells_ = [[NSMutableArray alloc] initWithCapacity:10];
+	if (_cells == nil) {
+		_cells = [[NSMutableArray alloc] initWithCapacity:10];
 	}
-	return cells_;
+	return _cells;
 }
 
 
@@ -116,15 +112,12 @@
 #pragma mark Memory management
 
 
-@synthesize target = target_;
-@synthesize action = action_;
-@synthesize selectedCell = selectedCell_;
+@synthesize target, action, selectedCell;
 
 
 - (void)dealloc {
-	[selectedCell_ release];
-	[cells_ release];
-	
+	[selectedCell release];
+	[_cells release];
 	[super dealloc];
 }
 
