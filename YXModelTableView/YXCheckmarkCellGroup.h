@@ -14,6 +14,8 @@
 	NSMutableArray *_cells;
 }
 
++ (id)group;
++ (id)groupWithTarget:(id)target action:(SEL)action;
 - (id)initWithTarget:(id)target action:(SEL)action;
 
 @property (nonatomic, assign) YXCheckmarkCell *selectedCell;
@@ -22,5 +24,7 @@
 
 - (void)addCell:(YXCheckmarkCell *)cell setSelected:(BOOL)selected;
 - (void)removeCell:(YXCheckmarkCell *)cell;
+
+- (NSInteger)indexOfCell:(YXCheckmarkCell *)cell;
 
 @end

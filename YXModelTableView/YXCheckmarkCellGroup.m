@@ -9,14 +9,20 @@
 #import "YXCheckmarkCellGroup.h"
 
 @interface YXCheckmarkCellGroup ()
-
 - (void)selectCell:(YXCheckmarkCell *)cell;
 - (NSMutableArray *)mutableCells;
-
 @end
 
 
 @implementation YXCheckmarkCellGroup
+
++ (id)group {
+    return [[[super alloc] init] autorelease];
+}
+
++ (id)groupWithTarget:(id)target action:(SEL)action {
+    return [[[super alloc] initWithTarget:target action:action] autorelease];
+}
 
 - (id)initWithTarget:(id)target action:(SEL)action {
     if ((self = [super init])) {
@@ -56,6 +62,10 @@
 	if (self.selectedCell == cell) { // cell can be already disposed here
 		[self selectCell:nil];
 	}
+}
+
+- (NSInteger)indexOfCell:(YXCheckmarkCell *)cell {
+    return [[self mutableCells] indexOfObject:cell];
 }
 
 
@@ -116,8 +126,8 @@
 
 
 - (void)dealloc {
-	[selectedCell release];
-	[_cells release];
+    [_cells release];
+	selectedCell = nil;
 	[super dealloc];
 }
 
