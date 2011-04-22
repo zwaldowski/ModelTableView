@@ -97,7 +97,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [[self modelCellAtIndexPath:indexPath] height];
+    YXAbstractCell *cell = [self modelCellAtIndexPath:indexPath];
+    if ([cell respondsToSelector:@selector(height)]) {
+        return [cell height];
+    }
+    return 44.0f;
 }
 
 
