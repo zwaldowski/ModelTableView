@@ -40,5 +40,6 @@
 - (YXAbstractCell *)cellAtIndex:(NSInteger)index;
 - (NSInteger)indexOfCell:(YXAbstractCell *)cell;
 - (NSInteger)cellCount;
+- (void)removeAllCells;
 
 @end

@@ -62,6 +62,10 @@
     return [cells_ count];
 }
 
+- (void)removeAllCells {
+    [cells_ removeAllObjects];
+}
+
 #pragma mark -
 #pragma mark Memory management
 
