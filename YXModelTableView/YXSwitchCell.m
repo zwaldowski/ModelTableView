@@ -9,12 +9,11 @@
 #import "YXSwitchCell.h"
 
 @interface YXSwitchCell ()
-
+- (void)switchControlChanged:(UISwitch *)switchControl;
 @property (nonatomic, copy, readwrite) NSString * title;
 @property (nonatomic, assign, readwrite) id target;
 @property (nonatomic, assign, readwrite) SEL initialValueGetter;
 @property (nonatomic, assign, readwrite) SEL action;
-
 @end
 
 
@@ -35,6 +34,7 @@
 	cell.title = title;
 	cell.initialValueGetter = initialValueGetter;
 	cell.action = action;
+    cell.togglesOnSelect = NO;
 
 	return [cell autorelease];
 }
@@ -73,6 +73,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.togglesOnSelect) {
+        UITableViewCell *theCell = [tableView cellForRowAtIndexPath:indexPath];
+        UISwitch *theSwitch = (UISwitch *)theCell.accessoryView;
+        BOOL set = !theSwitch.on;
+        [theSwitch setOn:set animated:YES];
+        [self switchControlChanged:theSwitch];
+    }
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -90,7 +97,7 @@
 @synthesize title = title_;
 @synthesize target = target_;
 @synthesize initialValueGetter = initialValueGetter_;
-@synthesize action = action_;
+@synthesize action = action_, togglesOnSelect;
 
 
 - (void)dealloc {

@@ -21,6 +21,7 @@
 @property (nonatomic, assign, readonly) id target;
 @property (nonatomic, assign, readonly) SEL initialValueGetter;
 @property (nonatomic, assign, readonly) SEL action;
+@property (nonatomic) BOOL togglesOnSelect;
 
 /* 
  Initial value getter is a method like: - (NSNumber*)valueForCell:(YXSwitchCell*)cell;
