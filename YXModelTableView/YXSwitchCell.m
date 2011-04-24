@@ -73,13 +73,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.togglesOnSelect) {
+    if (tableView.editing) {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    } else if (self.togglesOnSelect) {
         UITableViewCell *theCell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *theSwitch = (UISwitch *)theCell.accessoryView;
         BOOL set = !theSwitch.on;
         [theSwitch setOn:set animated:YES];
         [self switchControlChanged:theSwitch];
-    }
+	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
