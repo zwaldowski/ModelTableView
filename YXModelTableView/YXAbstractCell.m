@@ -11,17 +11,18 @@
 
 @implementation YXAbstractCell
 
+@synthesize reuseIdentifier, userInfo, image, height, style, editingAccessoryType, editable, editTarget, editAction;
+
+
 #pragma mark -
 #pragma mark Object lifecycle  
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-	self = [super init];
-	if (self) {
-		reuseIdentifier_ = [reuseIdentifier copy];
+- (id)initWithReuseIdentifier:(NSString *)aReuseIdentifier {
+	if ((self = [super init])) {
+		self.reuseIdentifier = aReuseIdentifier;
 	}
 	return self;
 }
-
 
 #pragma mark -
 #pragma mark Public interface
@@ -32,32 +33,30 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-}
+    if (self.editingAccessoryType == UITableViewCellAccessoryNone && tableView.editing && self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction]) {
+        [self.editTarget performSelector:self.editAction withObject:self];
+    }}
 
 - (void)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    if (self.editingAccessoryType != UITableViewCellAccessoryNone && tableView.editing && self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction]) {
+        [self.editTarget performSelector:self.editAction withObject:self];
+    }
 }
 
 - (CGFloat)height {
     return 44.0f;
 }
 
-
 #pragma mark -
 #pragma mark Memory management
 
-
-@synthesize reuseIdentifier = reuseIdentifier_;
-@synthesize userInfo = userInfo_;
-@synthesize image = image_;
-@synthesize height, style;
-
 - (void)dealloc {
-	[reuseIdentifier_ release];
-	[userInfo_ release];
-	[image_ release];
+    self.reuseIdentifier = nil;
+    self.userInfo = nil;
+    self.image = nil;
 	
 	[super dealloc];
 }

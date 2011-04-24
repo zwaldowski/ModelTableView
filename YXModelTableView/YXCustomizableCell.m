@@ -51,8 +51,10 @@
 	if (self.deselectsAutomatically) {
 		[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	}
-	
-	if (self.target != nil && self.selectionHandler != NULL) {
+    
+    if (tableView.editing) {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    } else if (self.target != nil && self.selectionHandler != NULL) {
 		[self.target performSelector:self.selectionHandler withObject:nil];
 	}
 }

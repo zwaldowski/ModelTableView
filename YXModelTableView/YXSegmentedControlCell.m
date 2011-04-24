@@ -89,6 +89,49 @@
 }
 
 #pragma mark -
+#pragma mark Overrides
+
+- (UITableViewCellAccessoryType)editingAccessoryType {
+    return UITableViewCellAccessoryNone;
+}
+
+- (void)setEditingAccessoryType:(UITableViewCellAccessoryType)editingAccessoryType {
+    if (editingAccessoryType != UITableViewCellAccessoryNone) {
+        @throw [NSString stringWithFormat:@"A %@ cell cannot have an editing accessory.", NSStringFromClass([self class])];
+    }
+}
+
+- (BOOL)editable {
+    return NO;
+}
+
+-(void)setEditable:(BOOL)editable {
+    if (editable) {
+        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
+    }
+}
+
+- (id)editTarget {
+    return nil;
+}
+
+- (void)setEditTarget:(id)editTarget {
+    if (editTarget) {
+        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
+    }
+}
+
+- (SEL)editAction {
+    return NULL;
+}
+
+- (void)setEditAction:(SEL)editAction {
+    if (editAction) {
+        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
+    }
+}
+
+#pragma mark -
 #pragma mark Memory management
 
 

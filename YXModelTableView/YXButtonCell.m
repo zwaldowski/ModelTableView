@@ -58,7 +58,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	if (self.target != nil && self.action != NULL) {
+    if (tableView.editing) {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    } else if (self.target != nil && self.action != NULL) {
 		[self.target performSelector:self.action withObject:self];
 	}
 }

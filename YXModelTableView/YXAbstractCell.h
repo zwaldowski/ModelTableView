@@ -10,17 +10,17 @@
 #import <UIKit/UIKit.h>
 
 @interface YXAbstractCell : NSObject {
-@protected
-	NSString * reuseIdentifier_;
-	id userInfo_;
-	UIImage * image_;
 }
 
-@property (nonatomic, readonly) NSString * reuseIdentifier;
+@property (nonatomic, copy) NSString * reuseIdentifier;
 @property (nonatomic, retain) id userInfo;
 @property (nonatomic, retain) UIImage * image;
 @property (nonatomic, readonly) CGFloat height;
 @property (nonatomic) UITableViewCellStyle style;
+@property (nonatomic) UITableViewCellAccessoryType editingAccessoryType;
+@property (nonatomic, assign) BOOL editable;
+@property (nonatomic, assign) id editTarget;
+@property (nonatomic, assign) SEL editAction;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
