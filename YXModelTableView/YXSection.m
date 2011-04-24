@@ -50,7 +50,12 @@
 }
 
 - (YXAbstractCell *)cellAtIndex:(NSInteger)index {
+    //if (index > [cells_ count]) return nil;
     return [cells_ objectAtIndex:index];
+}
+
+- (NSInteger)indexOfCell:(YXAbstractCell *)cell {
+    return [cells_ indexOfObject:cell];
 }
 
 - (NSInteger)cellCount {
