@@ -33,7 +33,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.editingAccessoryType == UITableViewCellAccessoryNone && tableView.editing && self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction]) {
+    if (self.editingAccessoryType == UITableViewCellAccessoryNone && self.editable && tableView.editing && self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction]) {
         [self.editTarget performSelector:self.editAction withObject:self];
     }}
 
