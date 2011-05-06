@@ -52,6 +52,9 @@
 											   green:79.0f/255.0f
 												blue:133.0f/255.0f
 											   alpha:1.0f];
+    if (self.image)
+        cell.imageView.image = self.image;
+    
 	return cell;
 }
 

@@ -55,6 +55,8 @@
 	cell.placeholder = self.placeholder;
 	cell.target = self;
 	cell.action = @selector(textDidChange:);
+    if (self.image)
+        cell.imageView.image = self.image;
 
 	return cell;
 }

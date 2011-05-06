@@ -56,6 +56,8 @@
     cell.textLabel.font = self.font;
     cell.textLabel.textColor = self.color;
     cell.textLabel.textAlignment = self.alignment;
+    if (self.image)
+        cell.imageView.image = self.image;
 	return cell;
 	
 }

@@ -63,6 +63,8 @@
 
 	cell.textLabel.text = self.title;
 	cell.detailTextLabel.text = self.value;
+    if (self.image)
+        cell.imageView.image = self.image;
 
 	if (self.target != nil && self.action != NULL) {
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

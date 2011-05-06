@@ -41,6 +41,8 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.textLabel.text = self.title;
 	cell.detailTextLabel.text = [[self.object valueForKey:self.key] description];
+    if (self.image)
+        cell.imageView.image = self.image;
 	
 	return cell;
 }

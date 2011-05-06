@@ -71,6 +71,9 @@
 	NSNumber * boolNumber = [self.target performSelector:self.initialValueGetter
 											  withObject:self];
 	cell.accessoryType = [self accessoryTypeForBool:[boolNumber boolValue]];
+    
+    if (self.image)
+        cell.imageView.image = self.image;
 	
 	self.lastCreatedTableCell = cell;
 	

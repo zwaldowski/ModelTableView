@@ -61,6 +61,8 @@
 
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.textLabel.text = self.title;
+    if (self.image)
+        cell.imageView.image = self.image;
 
 	if (self.target != nil && self.initialValueGetter != NULL) {
 		switchControl.on = [[self.target performSelector:self.initialValueGetter withObject:self] boolValue];
