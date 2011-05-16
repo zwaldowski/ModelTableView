@@ -22,4 +22,6 @@
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, retain) NSString * placeholder;
 
+@property (nonatomic, readonly) UITextField *textField;
+
 @end

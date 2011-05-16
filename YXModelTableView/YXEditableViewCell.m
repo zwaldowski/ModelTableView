@@ -8,12 +8,6 @@
 
 #import "YXEditableViewCell.h"
 
-@interface YXEditableViewCell ()
-
-@property (nonatomic, retain) UITextField * textField;
-
-@end
-
 @implementation YXEditableViewCell
 
 static const CGFloat kTextFieldMargin = 10.0f;
@@ -26,26 +20,43 @@ static const CGFloat kTextFieldMargin = 10.0f;
 		textField_.textColor = [UIColor blackColor];
 		textField_.textAlignment = UITextAlignmentLeft;
 		textField_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        textField_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self.contentView addSubview:textField_];
+		[self addSubview:textField_];
     }
     return self;
 }
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-
-	CGRect textFieldFrame = CGRectInset(self.contentView.bounds, kTextFieldMargin, 0.0f);
-	self.textField.frame = textFieldFrame;
+    
+    CGFloat left = kTextFieldMargin;
+    
+    if (self.imageView.image) {
+        left += self.imageView.image.size.width + 5;
+    }
+    
+    if (self.textLabel.text) {
+        left += 100 + kTextFieldMargin + kTextFieldMargin + 5;
+        CGRect myRect = self.contentView.bounds;
+        myRect.size.width = 100;
+        myRect.size.height -= 1;
+        myRect.origin.x = kTextFieldMargin;
+        self.textLabel.frame = myRect;
+    }
+    
+    CGRect inset = CGRectInset(self.contentView.bounds, left, 0);
+    inset.origin.y += 1;
+    textField_.frame = inset;
 }
 
 - (void)setPlaceholder:(NSString *)newPlaceholder {
-	self.textField.placeholder = newPlaceholder;
+	textField_.placeholder = newPlaceholder;
 }
 
 - (NSString *)placeholder {
-	return self.textField.placeholder;
+	return textField_.placeholder;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -56,8 +67,8 @@ static const CGFloat kTextFieldMargin = 10.0f;
 @synthesize target = target_;
 @synthesize action = action_;
 
-
 - (void)dealloc {
+    [textField_ resignFirstResponder];
 	[textField_ release];
 
     [super dealloc];

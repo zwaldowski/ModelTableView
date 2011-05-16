@@ -18,8 +18,6 @@
 
 @end
 
-
-
 @implementation YXEditableCell
 
 - (void)dealloc {
@@ -40,6 +38,21 @@
 	return [cell autorelease];
 }
 
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier target:(id)target
+					   action:(SEL)action
+                        label:(NSString *)labelText
+				  placeholder:(NSString *)placeholder {
+	YXEditableCell * cell = [[YXEditableCell alloc] initWithReuseIdentifier:reuseIdentifier];
+    
+	cell.target = target;
+	cell.action = action;
+	cell.placeholder = placeholder;
+    cell.labelText = labelText;
+    
+	return [cell autorelease];
+    
+}
+
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	YXEditableViewCell * cell = nil;
 
@@ -49,12 +62,18 @@
 	}
 	else {
 		cell = (YXEditableViewCell *)reusableCell;
+        [cell.textField removeTarget:nil action:@selector(_textDidEdit:) forControlEvents:UIControlEventEditingChanged];
 	}
 
-
+    if (labelText_) {
+        cell.textLabel.text = labelText_;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
 	cell.placeholder = self.placeholder;
 	cell.target = self;
 	cell.action = @selector(textDidChange:);
+    [cell.textField addTarget:self action:@selector(_textDidEdit:) forControlEvents:UIControlEventEditingChanged];
     if (self.image)
         cell.imageView.image = self.image;
 
@@ -65,8 +84,14 @@
 	[self.target performSelector:self.action withObject:self withObject:textField];
 }
 
+- (void)_textDidEdit:(UITextField *)textField {
+    if (self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction])
+        [self.editTarget performSelector:self.editAction withObject:textField];
+}
+
 @synthesize placeholder = placeholder_;
 @synthesize target = target_;
 @synthesize action = action_;
+@synthesize labelText = labelText_;
 
 @end
