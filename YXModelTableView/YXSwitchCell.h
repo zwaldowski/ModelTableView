@@ -1,33 +1,20 @@
 //
-//  YMSwitchCell.h
+//  YXSwitchCell.h
 //  YXModelTableViews
 //
 //  Created by Mikhail Kalugin on 5/11/10.
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "YXAbstractCell.h"
 
-@interface YXSwitchCell : YXAbstractCell {
-@protected
-	NSString * title_;
-	id target_;
-	SEL initialValueGetter_;
-	SEL action_;
-}
+@interface YXSwitchCell : YXAbstractCell <YXModelCellSupportsEditing>
 
-@property (nonatomic, copy, readonly) NSString * title;
-@property (nonatomic, assign, readonly) id target;
-@property (nonatomic, assign, readonly) SEL initialValueGetter;
-@property (nonatomic, assign, readonly) SEL action;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
+@property (nonatomic, copy) YXValueSenderBlock handler;
 @property (nonatomic) BOOL togglesOnSelect;
 
-/* 
- Initial value getter is a method like: - (NSNumber*)valueForCell:(YXSwitchCell*)cell;
- Change handler has a form of: - (void)switchCell:(YXSwitchCell*)cell switchValueDidChange:(UISwitch*)switch;
- */
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title 
-				 target:(id)target initialValueGetter:(SEL)initialValueGetter action:(SEL)action;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler;
 
 @end

@@ -13,45 +13,28 @@
 
 - (UITableViewCellAccessoryType)accessoryTypeForBool:(BOOL)flag;
 - (BOOL)boolForAccessoryType:(UITableViewCellAccessoryType)accessoryType;
-- (BOOL)delegateAllowsToChangeTo:(BOOL)newValue;
+- (BOOL)_allowsToChangeTo:(BOOL)newValue;
 
-@property (nonatomic, retain) UITableViewCell * lastCreatedTableCell;
+@property (nonatomic, retain) UITableViewCell *lastCreatedTableCell;
+@property (nonatomic, copy) YXValueValidationBlock willChangeHandler;
 
 @end
 
-
 @implementation YXCheckmarkCell
 
+@synthesize title, initialValueGetter, handler, willChangeHandler, lastCreatedTableCell;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
-
-+ (id)cellWithReuseIdentifier:(NSString*)reuseIdentifier 
-						title:(NSString*)title
-					   target:(id)target 
-		   initialValueGetter:(SEL)initialValueGetter 
-					   action:(SEL)action
-{
-	NSAssert(target != nil, @"");
-	NSAssert([target respondsToSelector:initialValueGetter], @"");
-	NSAssert([target respondsToSelector:action], @"");
-	
-	YXCheckmarkCell * cell = [[YXCheckmarkCell alloc] initWithReuseIdentifier:reuseIdentifier];
-	cell.title = title;
-	cell.target = target;
-	cell.initialValueGetter = initialValueGetter;
-	cell.action = action;
-	
-	return [cell autorelease];
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title group:(YXCheckmarkCellGroup *)group {
+	return [self cellWithReuseIdentifier:reuseIdentifier title:title group:group selected:NO];
 }
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier 
-						title:(NSString *)title
-						group:(YXCheckmarkCellGroup *)group
-					 selected:(BOOL)selected
-{
-	YXCheckmarkCell * cell = [[YXCheckmarkCell alloc] initWithReuseIdentifier:reuseIdentifier];
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title group:(YXCheckmarkCellGroup *)group selected:(BOOL)selected {
+	YXCheckmarkCell * cell = [YXCheckmarkCell new];
+    
+    cell.reuseIdentifier = reuseIdentifier;
 	cell.title = title;
 	
 	[group addCell:cell setSelected:selected];
@@ -59,23 +42,43 @@
 	return [cell autorelease];
 }
 
-- (UITableViewCell*)tableViewCellWithReusableCell:(UITableViewCell*)reusableCell {
-	UITableViewCell * cell = reusableCell;
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-									   reuseIdentifier:self.reuseIdentifier] autorelease];
-	}
-	
-	cell.textLabel.text = self.title;
-	
-	NSNumber * boolNumber = [self.target performSelector:self.initialValueGetter
-											  withObject:self];
-	cell.accessoryType = [self accessoryTypeForBool:[boolNumber boolValue]];
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler {
+	NSAssert(handler, @"");
     
+    YXCheckmarkCell *cell = [self new];
+    
+    cell.reuseIdentifier = reuseIdentifier;
+    cell.title = title;
+    cell.initialValueGetter = initialValueGetter;
+    cell.handler = handler;
+    
+    return [cell autorelease];
+}
+
+- (void)dealloc {
+    self.title = nil;
+    self.lastCreatedTableCell = nil;
+    self.handler = NULL;
+    self.initialValueGetter = NULL;
+    self.willChangeHandler = NULL;
+	
+	[super dealloc];
+}
+
+#pragma mark Table view
+
+- (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell*)reusableCell {
+	UITableViewCell *cell = reusableCell;
+    
+	if (!cell)
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
+    self.lastCreatedTableCell = cell;
+    
+	cell.textLabel.text = self.title;
     if (self.image)
         cell.imageView.image = self.image;
-	
-	self.lastCreatedTableCell = cell;
+
+	[self update];
 	
 	return cell;
 }
@@ -88,22 +91,26 @@
 	BOOL previousValue = [self boolForAccessoryType:cell.accessoryType];
 	BOOL newValue = !previousValue;
 	
-	BOOL shouldUpdate = [self delegateAllowsToChangeTo:newValue];
-	if (shouldUpdate) {	
+	if ([self _allowsToChangeTo:newValue]) {	
 		cell.accessoryType = [self accessoryTypeForBool:newValue];
-		[self.target performSelector:self.action
-						  withObject:self 
-						  withObject:[NSNumber numberWithBool:newValue]];	
+        
+        YXValueSenderBlock block = self.handler;
+        if (block)
+            block(self, [NSNumber numberWithBool:newValue]);
 	}
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 - (void)update {
-	if (self.lastCreatedTableCell == nil) {
+	if (!self.lastCreatedTableCell)
 		return;
-	}
-	
-	NSNumber * boolNumber = [self.target performSelector:self.initialValueGetter
-											  withObject:self];
+    
+    NSNumber *boolNumber = [NSNumber numberWithBool:NO];
+    YXValueGetterBlock block = self.initialValueGetter;
+    if (block)
+        boolNumber = block(self);
+    
 	self.lastCreatedTableCell.accessoryType = [self accessoryTypeForBool:[boolNumber boolValue]];
 }
 
@@ -112,102 +119,22 @@
 
 
 - (UITableViewCellAccessoryType)accessoryTypeForBool:(BOOL)flag {
-	if (flag) {
+	if (flag)
 		return UITableViewCellAccessoryCheckmark;
-	}
-	else {
+	else
 		return UITableViewCellAccessoryNone;
-	}
 }
 
 - (BOOL)boolForAccessoryType:(UITableViewCellAccessoryType)accessoryType {
-	if (accessoryType == UITableViewCellAccessoryCheckmark) {
-		return YES;
-	}
-	else {
-		return NO;
-	}
+	return (accessoryType == UITableViewCellAccessoryCheckmark);
 }
 
-- (BOOL)delegateAllowsToChangeTo:(BOOL)newValue {
-	if (![self.target respondsToSelector:self.willChangeHandler]) {
-		return YES;
-	}
-	
-	NSNumber * boolNumber = [NSNumber numberWithBool:newValue];
-	
-	NSMethodSignature * signature = [self.target methodSignatureForSelector:self.willChangeHandler];
-	NSInvocation * invocation = [NSInvocation invocationWithMethodSignature:signature];
-	[invocation setTarget:self.target];
-	[invocation setSelector:self.willChangeHandler];
-	[invocation setArgument:&self atIndex:2];
-	[invocation setArgument:&boolNumber atIndex:3];
-	
-	[invocation invoke];
-	
-	BOOL returnValue = YES;
-	[invocation getReturnValue:&returnValue];
-	
-	
-	return returnValue;
-}
-
-#pragma mark -
-#pragma mark Overrides
-
-- (UITableViewCellAccessoryType)editingAccessoryType {
-    return UITableViewCellAccessoryNone;
-}
-
-- (void)setEditingAccessoryType:(UITableViewCellAccessoryType)editingAccessoryType {
-    if (editingAccessoryType != UITableViewCellAccessoryNone) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot have an editing accessory.", NSStringFromClass([self class])];
-    }
-}
-
-- (BOOL)editable {
-    return NO;
-}
-
--(void)setEditable:(BOOL)editable {
-    if (editable) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
-    }
-}
-
-- (id)editTarget {
-    return nil;
-}
-
-- (void)setEditTarget:(id)editTarget {
-    if (editTarget) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
-    }
-}
-
-- (SEL)editAction {
-    return NULL;
-}
-
-- (void)setEditAction:(SEL)editAction {
-    if (editAction) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
-    }
-}
-
-@synthesize title = title_;
-@synthesize target = target_;
-@synthesize initialValueGetter = initialValueGetter_;
-@synthesize action = action_;
-@synthesize willChangeHandler = willChangeHandler_;
-@synthesize lastCreatedTableCell = lastCreatedTableCell_;
-
-
-- (void)dealloc {
-	[title_ release];
-	[lastCreatedTableCell_ release];
-	
-	[super dealloc];
+- (BOOL)_allowsToChangeTo:(BOOL)newValue {
+    YXValueValidationBlock block = self.willChangeHandler;
+    if (!block)
+        return YES;
+    
+    return block(self, [NSNumber numberWithBool:newValue]);
 }
 
 @end

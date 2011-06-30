@@ -6,30 +6,18 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "YXAbstractCell.h"
 
-@interface YXCustomizableCell : YXAbstractCell {
-@private
-	id target_;
-	SEL buildingSelector_;
-	SEL selectionHandler_;
-	BOOL deselectsAutomatically_;
-}
+@class YXCustomizableCell;
 
-@property (nonatomic, assign, readonly) id target;
-@property (nonatomic, assign, readonly) SEL buildingSelector;
-@property (nonatomic, assign, readonly) SEL selectionHandler;
-@property (nonatomic, assign, readonly) BOOL deselectsAutomatically;
+typedef UITableViewCell *(^YXCustomizableBuildingBlock)(YXCustomizableCell *cell, UITableViewCell *reusable);
 
-//
-// Target must implement following building selector. Target is responsible
-// for checking 'reusable' argument and creating UITableViewCell if it is nil
-//
-//   - (UITableViewCell *)createTableCellForCell:(YXCustomizableCell *)cell withReusable:(UITableViewCell *)reusable;
-//
-// Selection selector signature:
-// 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier target:(id)target buildingSelector:(SEL)buildingSelector selectionHandler:(SEL)selectionHandler;
+@interface YXCustomizableCell : YXAbstractCell <YXModelCellSupportsEditing>
+
+@property (nonatomic, copy) YXSenderBlock selectionHandler;
+@property (nonatomic, copy) YXCustomizableBuildingBlock buildingHandler;
+@property (nonatomic) BOOL deselectsAutomatically;
+
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier buildingHandler:(YXCustomizableBuildingBlock)buildingHandler selectionHandler:(YXSenderBlock)selectionHandler;
 
 @end

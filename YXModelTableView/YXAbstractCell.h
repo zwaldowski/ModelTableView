@@ -6,23 +6,17 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
-@interface YXAbstractCell : NSObject {
-}
+typedef void(^YXSenderBlock)(id sender);
+typedef void(^YXValueSenderBlock)(id sender, NSNumber *value);
+typedef BOOL(^YXValueValidationBlock)(id sender, NSNumber *value);
+typedef NSNumber *(^YXValueGetterBlock)(id sender);
 
-@property (nonatomic, copy) NSString * reuseIdentifier;
-@property (nonatomic, retain) id userInfo;
-@property (nonatomic, retain) UIImage * image;
+@interface YXAbstractCell : NSObject
+
 @property (nonatomic, readonly) CGFloat height;
-@property (nonatomic) UITableViewCellStyle style;
-@property (nonatomic) UITableViewCellAccessoryType editingAccessoryType;
-@property (nonatomic, assign) BOOL editable;
-@property (nonatomic, assign) id editTarget;
-@property (nonatomic, assign) SEL editAction;
-
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, copy) NSString *reuseIdentifier;
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell;
 
@@ -30,4 +24,11 @@
 - (void)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath;
 
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier;
+
+@end
+
+@protocol YXModelCellSupportsEditing <NSObject>
+@property (nonatomic) UITableViewCellAccessoryType editingAccessoryType;
+@property (nonatomic, copy) YXSenderBlock editHandler;
 @end

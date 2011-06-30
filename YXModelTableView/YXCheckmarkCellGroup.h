@@ -6,22 +6,20 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "YXCheckmarkCell.h"
 
-@interface YXCheckmarkCellGroup : NSObject {
-@private
-	NSMutableArray *_cells;
-}
+typedef void(^YXCheckmarkBlock)(YXCheckmarkCell *selected, NSUInteger index);
 
-+ (id)group;
-+ (id)groupWithTarget:(id)target action:(SEL)action;
-- (id)initWithTarget:(id)target action:(SEL)action;
+@interface YXCheckmarkCellGroup : NSObject
 
 @property (nonatomic, assign) YXCheckmarkCell *selectedCell;
-@property (nonatomic, assign) id target;
-@property (nonatomic, assign) SEL action; // checkmarkCellGroup:group selectedCell:cell
+@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, copy, readonly) YXCheckmarkBlock handler;
 
++ (id)group;
++ (id)groupWithHandler:(YXCheckmarkBlock)handler;
+
+- (void)addCell:(YXCheckmarkCell *)cell;
 - (void)addCell:(YXCheckmarkCell *)cell setSelected:(BOOL)selected;
 - (void)removeCell:(YXCheckmarkCell *)cell;
 

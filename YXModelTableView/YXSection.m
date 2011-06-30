@@ -8,85 +8,87 @@
 
 #import "YXSection.h"
 
+@interface YXSection()
+@property (nonatomic, retain) NSMutableArray *cells;
+@end
 
 @implementation YXSection
 
+@synthesize header, footer, headerView, footerView, cells;
 
 #pragma mark -
-#pragma mark Objec lifecycle
-
-- (id)init {
-	return [self initWithHeader:nil footer:nil];
-}
-
-- (id)initWithHeader:(NSString *)header footer:(NSString *)footer {
-	self = [super init];
-	if (self) {
-		cells_ = [[NSMutableArray alloc] init];
-		header_ = [header copy];
-		footer_ = [footer copy];
-	}
-	return self;
-}
+#pragma mark Object lifecycle
 
 + (id)section {
-	return [[self class] sectionWithHeader:nil footer:nil];
+	return [self sectionWithHeader:nil footer:nil];
+}
+
++ (id)sectionWithHeader:(NSString *)header {
+	return [self sectionWithHeader:header footer:nil];
 }
 
 + (id)sectionWithHeader:(NSString *)header footer:(NSString *)footer {
-	return [[[[self class] alloc] initWithHeader:header footer:footer] autorelease];
+    YXSection *instance = [self new];
+    
+    instance.header = header;
+    instance.footer = footer;
+    
+    return [instance autorelease];
 }
 
+- (id)init {
+    if ((self = [super init])) {
+        self.cells = [NSMutableArray array];
+    }
+	return self;
+}
+
+- (void)dealloc {
+    self.header = nil;
+    self.footer = nil;
+    self.headerView = nil;
+    self.footerView = nil;
+    self.cells = nil;
+    
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Public interface
 
 - (void)addCell:(YXAbstractCell *)cell {
-	[cells_ addObject:cell];
+	[self.cells addObject:cell];
 }
 
 - (void)removeCell:(YXAbstractCell *)cell {
-	[cells_ removeObject:cell];
+	[self.cells removeObject:cell];
 }
 
 - (YXAbstractCell *)cellAtIndex:(NSInteger)index {
-    //if (index > [cells_ count]) return nil;
-    return [cells_ objectAtIndex:index];
+    return [self.cells objectAtIndex:index];
 }
 
 - (NSInteger)indexOfCell:(YXAbstractCell *)cell {
-    return [cells_ indexOfObject:cell];
+    return [self.cells indexOfObject:cell];
 }
 
 - (NSInteger)cellCount {
-    return [cells_ count];
+    return self.cells.count;
 }
 
 - (void)removeAllCells {
-    [cells_ removeAllObjects];
+    [self.cells removeAllObjects];
+}
+
+- (YXAbstractCell *)lastCell {
+    return [self.cells lastObject];
 }
 
 #pragma mark -
-#pragma mark Memory management
+#pragma NSFastEnumeration
 
-
-@synthesize header = header_;
-@synthesize footer = footer_;
-@synthesize headerView = headerView_;
-@synthesize footerView = footerView_;
-
-
-- (void)dealloc {
-	[header_ release];
-	[footer_ release];
-
-	[headerView_ release];
-	[footerView_ release];
-
-	[cells_ release];
-
-	[super dealloc];
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id [])buffer count:(NSUInteger)len {
+    return [self.cells countByEnumeratingWithState:state objects:buffer count:len];
 }
-
 
 @end

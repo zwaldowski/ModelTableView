@@ -8,128 +8,113 @@
 
 #import "YXCheckmarkCellGroup.h"
 
-@interface YXCheckmarkCellGroup ()
-- (void)selectCell:(YXCheckmarkCell *)cell;
-- (NSMutableArray *)mutableCells;
+@interface YXCheckmarkCell()
+@property (nonatomic, copy) YXValueValidationBlock willChangeHandler;
 @end
 
+@interface YXCheckmarkCellGroup ()
+@property (nonatomic, retain) NSMutableArray *cells;
+@property (nonatomic, copy, readwrite) YXCheckmarkBlock handler;
+@end
 
 @implementation YXCheckmarkCellGroup
 
+@synthesize handler, selectedCell, cells;
+
 + (id)group {
-    return [[[super alloc] init] autorelease];
+    return [[self new] autorelease];
 }
 
-+ (id)groupWithTarget:(id)target action:(SEL)action {
-    return [[[super alloc] initWithTarget:target action:action] autorelease];
++ (id)groupWithHandler:(YXCheckmarkBlock)aHandler {
+    YXCheckmarkCellGroup *instance = [self new];
+    instance.handler = aHandler;
+    return [instance autorelease];
 }
 
-- (id)initWithTarget:(id)target action:(SEL)action {
-    if ((self = [super init])) {
-        self.target = target;
-        self.action = action;
-    }
-    return self;
+- (void)dealloc {
+    self.cells = nil;
+    self.handler = nil;
+	self.selectedCell = nil;
+	[super dealloc];
 }
 
 #pragma mark -
 #pragma mark Public interface
 
+- (void)addCell:(YXCheckmarkCell *)cell {
+    [self addCell:cell setSelected:NO];
+}
+
 - (void)addCell:(YXCheckmarkCell *)cell setSelected:(BOOL)selected {
-	NSAssert(cell != nil, @"");
+	NSAssert(cell, @"");
 	
-	[[self mutableCells] addObject:cell];
+	[self.cells addObject:cell];
 	
-	if (selected) {
+	if (selected)
 		self.selectedCell = cell;
-	}
-	
-	cell.target = self;
-	cell.initialValueGetter = @selector(initialValueForCell:);
-	cell.action = @selector(cell:changedValue:);
-	cell.willChangeHandler = @selector(cell:willChangeValue:);
+    
+    cell.initialValueGetter = ^NSNumber *(YXCheckmarkCell *cell){
+        BOOL boolValue = (cell == self.selectedCell);
+        return [NSNumber numberWithBool:boolValue];
+    };
+    
+    cell.handler = ^(YXCheckmarkCell *cell, NSNumber *value){
+        if ([value boolValue])
+            self.selectedCell = cell;
+    };
+    
+    cell.willChangeHandler = ^BOOL(YXCheckmarkCell *cell, NSNumber *value){
+        return (self.selectedCell != cell);
+    };
 }
 
 - (void)removeCell:(YXCheckmarkCell*)cell {
-	NSAssert(cell != nil, @"");
+	NSAssert(cell, @"");
 	
-	if (cell.target == self) {
-		cell.target = nil;
-	}
+    cell.handler = NULL;
+    cell.initialValueGetter = NULL;
+    
+    if (self.selectedCell == cell)
+        self.selectedCell = nil;
 	
-	[[self mutableCells] removeObject:cell];
-	
-	if (self.selectedCell == cell) { // cell can be already disposed here
-		[self selectCell:nil];
-	}
+	[self.cells removeObject:cell];
 }
 
 - (NSInteger)indexOfCell:(YXCheckmarkCell *)cell {
-    return [[self mutableCells] indexOfObject:cell];
+    return [self.cells indexOfObject:cell];
 }
 
-
-#pragma mark -
-#pragma mark Checkmark cell callbacks
-
-
-- (NSNumber *)initialValueForCell:(YXCheckmarkCell *)cell {
-	BOOL boolValue = (cell == self.selectedCell);
-	return [NSNumber numberWithBool:boolValue];
+- (void)setSelectedIndex:(NSUInteger)selectedIndex {
+    if (selectedIndex >= self.cells.count)
+        return;
+    
+    YXCheckmarkCell *cell = [self.cells objectAtIndex:selectedIndex];
+    self.selectedCell = cell;
 }
 
-- (void)cell:(YXCheckmarkCell *)cell changedValue:(NSNumber *)selected {
-	if ([selected boolValue] == YES) {
-		[self selectCell:cell];
-	}
+- (NSUInteger)selectedIndex {
+    return [self indexOfCell:self.selectedCell];
 }
-
-- (BOOL)cell:(YXCheckmarkCell*)cell willChangeValue:(NSNumber*)selected {
-	if (self.selectedCell == cell) {
-		return NO;
-	}
-	return YES;
-}
-
 
 #pragma mark -
 #pragma mark Private
 
-
-- (void)selectCell:(YXCheckmarkCell *)cell {
-	YXCheckmarkCell * previousCell = self.selectedCell;
-	
-	self.selectedCell = cell;
-	
-	if (previousCell != nil) {
+- (void)setSelectedCell:(YXCheckmarkCell *)newCell {
+    YXCheckmarkCell *previousCell = self.selectedCell;
+    
+    selectedCell = newCell;
+    
+	if (previousCell)
 		[previousCell update];
-	}
-	
-	if ([self.target respondsToSelector:self.action]) {
-		[self.target performSelector:self.action withObject:self withObject:cell];
-	}
+    
+    YXCheckmarkBlock block = self.handler;
+    block(newCell, [self indexOfCell:newCell]);
 }
 
-- (NSMutableArray *)mutableCells {
-	if (_cells == nil) {
-		_cells = [[NSMutableArray alloc] initWithCapacity:10];
-	}
-	return _cells;
+- (NSMutableArray *)cells {
+    if (!cells)
+        cells = [[NSMutableArray alloc] initWithCapacity:10];
+    return cells;
 }
-
-
-#pragma mark -
-#pragma mark Memory management
-
-
-@synthesize target, action, selectedCell;
-
-
-- (void)dealloc {
-    [_cells release];
-	selectedCell = nil;
-	[super dealloc];
-}
-
 
 @end

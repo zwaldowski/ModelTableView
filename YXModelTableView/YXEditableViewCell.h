@@ -6,22 +6,9 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@interface YXEditableViewCell : UITableViewCell
 
-// Doesn't implement valueSuffixLabel_
-
-@interface YXEditableViewCell : UITableViewCell <UITextFieldDelegate> {
-@private
-	UITextField * textField_;
-//	UILabel *valueSuffixLabel_;
-	id target_;
-	SEL action_;
-}
-
-@property (nonatomic, assign) id target;
-@property (nonatomic, assign) SEL action;
-@property (nonatomic, retain) NSString * placeholder;
-
-@property (nonatomic, readonly) UITextField *textField;
+@property (nonatomic, copy) NSString *placeholder;
+@property (nonatomic, retain, readonly) UITextField *textField;
 
 @end

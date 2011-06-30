@@ -8,8 +8,13 @@
 
 #import "YXSegmentedControlViewCell.h"
 
+@interface YXSegmentedControlViewCell()
+@property (nonatomic, retain, readwrite) UISegmentedControl *segmentedControl;
+@end
 
 @implementation YXSegmentedControlViewCell
+
+@synthesize segmentedControl;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	return [self initWithSegmentedControlItems:nil reuseIdentifier:reuseIdentifier];
@@ -18,9 +23,9 @@
 - (id)initWithSegmentedControlItems:(NSArray *)items reuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 	if (self) {
-        segmentedControl_ = [[UISegmentedControl alloc] initWithItems:items];
+        self.segmentedControl = [[[UISegmentedControl alloc] initWithItems:items] autorelease];
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self.contentView addSubview:segmentedControl_];
+		[self.contentView addSubview:self.segmentedControl];
     }
     return self;
 }
@@ -34,52 +39,46 @@
 
 - (void)setItems:(NSArray *)items {
 	id lastItem = [items lastObject];
-	SEL selector = NULL;
+    BOOL isImage;
 
-	if ([lastItem isKindOfClass:[NSString class]]) {
-		selector = @selector(setTitle:forSegmentAtIndex:);
-	}
-	else if ([lastItem isKindOfClass:[UIImage class]]){
-		selector = @selector(setImage:forSegmentAtIndex:);
-	}
-	else {
+	if ([lastItem isKindOfClass:[NSString class]])
+		isImage = NO;
+	else if ([lastItem isKindOfClass:[UIImage class]])
+        isImage = YES;
+	else
 		return;
-	}
-
-	for (NSUInteger i = 0; i < [items count]; i++)
-	{
-		NSMethodSignature * signature = [self.segmentedControl methodSignatureForSelector:selector];
-		NSInvocation * invocation = [NSInvocation invocationWithMethodSignature:signature];
-
-		[invocation setTarget:self.segmentedControl];
-		[invocation setSelector:selector];
-		[invocation setArgument:[items objectAtIndex:i] atIndex:2];
-		[invocation setArgument:&i atIndex:3];
-
-		[invocation invoke];
-	}
+    
+    for (id item in items) {
+        NSUInteger i = [items indexOfObject:item];
+        NSUInteger count = self.segmentedControl.numberOfSegments;
+        if (i >= count) {
+            NSUInteger pos = (count) ? count - 1 : 0;
+            if (isImage)
+                [self.segmentedControl insertSegmentWithImage:item atIndex:pos animated:NO];
+            else
+                [self.segmentedControl insertSegmentWithTitle:item atIndex:pos animated:NO];
+        } else {
+            if (isImage)
+                [self.segmentedControl setImage:item forSegmentAtIndex:i];
+            else
+                [self.segmentedControl setTitle:item forSegmentAtIndex:i];
+        }
+    }
 
 	[self setNeedsLayout];
 }
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-
-	CGRect contentViewBounds = self.contentView.bounds;
-	self.segmentedControl.frame = CGRectInset(contentViewBounds, -1.0f, -2.0f);
+	self.segmentedControl.frame = CGRectInset(self.contentView.bounds, -1.0f, -2.0f);
 }
 
 
 #pragma mark -
 #pragma mark Memory management
 
-
-@synthesize segmentedControl = segmentedControl_;
-
-
 - (void)dealloc {
-	[segmentedControl_ release];
-
+    self.segmentedControl = nil;
     [super dealloc];
 }
 

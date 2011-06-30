@@ -1,11 +1,10 @@
-/*
- *  YXModelTableView.h
- *  YXModelTableViews
- *
- *  Created by Roman Busyghin on 7/20/10.
- *  Copyright 2010 Яндекс. All rights reserved.
- *
- */
+//
+//  YXModelTableView.h
+//  YXModelTableView
+//
+//  Created by Roman Busyghin on 7/20/10.
+//  Copyright 2010 Яндекс. All rights reserved.
+//
 
 #import "YXModelTableViewController.h"
 #import "YXSection.h"

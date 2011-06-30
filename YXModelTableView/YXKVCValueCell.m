@@ -8,17 +8,17 @@
 
 #import "YXKVCValueCell.h"
 
-
 @implementation YXKVCValueCell
 
+@synthesize title, object, key;
+@synthesize editingAccessoryType, editHandler;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
-
-+ (id)cellWithReuseIdentifier:(NSString*)reuseIdentifier title:(NSString*)title 
-				   object:(id)object key:(NSString*)key {
-	YXKVCValueCell * cell = [[YXKVCValueCell alloc] initWithReuseIdentifier:reuseIdentifier];
++ (id)cellWithReuseIdentifier:(NSString*)reuseIdentifier title:(NSString*)title  object:(id)object key:(NSString*)key {
+	YXKVCValueCell *cell = [YXKVCValueCell new];
+    cell.reuseIdentifier = reuseIdentifier;
 	cell.title = title;
 	cell.object = object;
 	cell.key = key;
@@ -26,17 +26,21 @@
 	return [cell autorelease];
 }
 
+- (void)dealloc {
+    self.object = nil;
+    self.key = nil;
+    self.title = nil;
+	
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Public interface 
 
-
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	UITableViewCell * cell = reusableCell;
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 
-									   reuseIdentifier:self.reuseIdentifier] autorelease];
-	} 
+	if (!cell)
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1  reuseIdentifier:self.reuseIdentifier] autorelease];
 	
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.textLabel.text = self.title;
@@ -50,24 +54,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-
-#pragma mark -
-#pragma mark Memory management
-
-
-@synthesize title = _title;
-@synthesize object = _object;
-@synthesize key = _key;
-
-
-- (void)dealloc {
-	[_object release];
-	[_key release];
-	[_title release];
-	
-	[super dealloc];
-}
 
 @end

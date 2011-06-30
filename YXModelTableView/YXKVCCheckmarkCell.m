@@ -11,43 +11,34 @@
 
 @implementation YXKVCCheckmarkCell
 
-@synthesize key = _key;
-@synthesize object = _object;
-@synthesize updateTarget = _updateTarget;
-@synthesize updateAction = _updateAction;
+@synthesize key, object, updateAction;
+
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title object:(id)object key:(NSString *)key {
+	YXKVCCheckmarkCell * cell = [YXKVCCheckmarkCell new];
+    
+    cell.reuseIdentifier = reuseIdentifier;
+	cell.title = title;
+	cell.object = object;
+	cell.key = key;
+    cell.initialValueGetter = ^NSNumber *(YXCheckmarkCell *cell){
+        return [object valueForKey:key];
+    };
+    cell.handler = ^(YXCheckmarkCell *cell, NSNumber *value){
+        [object setValue:value forKey:key];
+        YXSenderBlock block = [(YXKVCCheckmarkCell *)cell updateAction];
+        if (block)
+            block(cell);
+    };
+
+	return [cell autorelease];
+}
 
 - (void)dealloc {
 	self.key = nil;
 	self.object = nil;
+    self.updateAction = NULL;
 	
 	[super dealloc];
-}
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier 
-						title:(NSString *)title
-					   object:(id)object 
-						  key:(NSString *)key
-{
-	YXKVCCheckmarkCell * cell = [[YXKVCCheckmarkCell alloc] initWithReuseIdentifier:reuseIdentifier];
-	cell.title = title;
-	cell.object = object;
-	cell.key = key;
-	cell.target = cell;
-	cell.initialValueGetter = @selector(initialValue:);
-	cell.action = @selector(checkmarkCell:changedValue:);
-	
-	return [cell autorelease];
-}
-
-- (NSNumber*)initialValue:(YXCheckmarkCell *)cell {
-	return [self.object valueForKey:self.key];
-}
-
-- (void)checkmarkCell:(YXCheckmarkCell *)cell changedValue:(NSNumber *)value {
-	[self.object setValue:value forKey:self.key];
-	if (self.updateTarget && [self.updateTarget respondsToSelector:self.updateAction]) {
-		[self.updateTarget performSelector:self.updateAction withObject:self];
-	}
 }
 
 @end

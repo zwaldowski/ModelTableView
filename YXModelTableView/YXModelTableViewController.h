@@ -6,14 +6,16 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "YXModelTableView.h"
 
-@interface YXModelTableViewController : UITableViewController {
-}
+@interface YXModelTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, copy) NSArray *sections;
-@property (nonatomic, copy) NSArray *utilities; // Work around having to retain a YXCheckmarkCellGroup
+@property (nonatomic, retain) NSArray *accessoryGroup;
+@property (nonatomic, retain, readonly) UITableView *tableView;
+@property (nonatomic, retain, readonly) NSIndexPath *lastSelectedIndexPath;
 
+- (id)initWithStyle:(UITableViewStyle)style;
+- (UITableView *)createTableView;
 
 @end

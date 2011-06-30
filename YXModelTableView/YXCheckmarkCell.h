@@ -10,38 +10,15 @@
 
 @class YXCheckmarkCellGroup;
 
-@interface YXCheckmarkCell : YXAbstractCell {
-@protected
-	NSString * title_;
-	
-	id target_;
-	SEL initialValueGetter_;
-	SEL action_;
-	SEL willChangeHandler_;
-	
-	UITableViewCell * lastCreatedTableCell_;
-}
+@interface YXCheckmarkCell : YXAbstractCell
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, assign) id target;
-@property (nonatomic, assign) SEL initialValueGetter;
-@property (nonatomic, assign) SEL action;
-@property (nonatomic, assign) SEL willChangeHandler; // like action, but returns BOOL
+@property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
+@property (nonatomic, copy) YXValueSenderBlock handler;
 
-/* 
- Initial value getter is a method like: - (NSNumber*)valueForCell:(YXSwitchCell*)cell;
- Change handler has a form of: - (void)checkmarkCell:(YXCheckmarkCell*)cell checkmarkValueDidChange:(NSNumber*)checked;
- */
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier 
-						title:(NSString *)title
-					   target:(id)target 
-		   initialValueGetter:(SEL)initialValueGetter 
-					   action:(SEL)action;
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier 
-						title:(NSString *)title
-						group:(YXCheckmarkCellGroup *)group
-					 selected:(BOOL)selected;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title group:(YXCheckmarkCellGroup *)group;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title group:(YXCheckmarkCellGroup *)group selected:(BOOL)selected;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler;
 
 - (void)update;
 

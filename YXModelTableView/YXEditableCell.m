@@ -9,89 +9,91 @@
 #import "YXEditableCell.h"
 #import "YXEditableViewCell.h"
 
-
 @interface YXEditableCell ()
-
-@property (nonatomic, copy, readwrite) NSString * placeholder;
-@property (nonatomic, assign, readwrite) id target;
-@property (nonatomic, assign, readwrite) SEL action;
-
+@property (nonatomic, assign) UITextField *textField;
 @end
 
 @implementation YXEditableCell
 
-- (void)dealloc {
-	[placeholder_ release];
+@synthesize placeholder, labelText, value, handler, textField;
+@synthesize editingAccessoryType, editHandler;
 
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder {
+    return [self cellWithReuseIdentifier:reuseIdentifier label:labelText placeholder:placeholder value:nil handler:NULL];
+}
+
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value {
+    return [self cellWithReuseIdentifier:reuseIdentifier label:labelText placeholder:placeholder value:value handler:NULL];
+}
+
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler {
+    return [self cellWithReuseIdentifier:reuseIdentifier label:labelText placeholder:placeholder value:nil handler:handler];
+}
+
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler {
+    YXEditableCell * cell = [YXEditableCell new];
+    cell.reuseIdentifier = reuseIdentifier;
+    cell.labelText = labelText;
+    cell.placeholder = placeholder;
+    cell.value = value;
+    cell.handler = handler;
+    return [cell autorelease];
+}
+
+- (void)dealloc {
+	self.placeholder = nil;
+    self.labelText = nil;
+    self.value = nil;
+    self.handler = nil;
+    self.textField = nil;
+    self.editHandler = NULL;
+    
 	[super dealloc];
 }
 
-+ (id)cellWithReuseIdentifier:(NSString*)reuseIdentifier target:(id)target
-					   action:(SEL)action placeholder:(NSString *)placeholder
-{
-	YXEditableCell * cell = [[YXEditableCell alloc] initWithReuseIdentifier:reuseIdentifier];
-
-	cell.target = target;
-	cell.action = action;
-	cell.placeholder = placeholder;
-
-	return [cell autorelease];
-}
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier target:(id)target
-					   action:(SEL)action
-                        label:(NSString *)labelText
-				  placeholder:(NSString *)placeholder {
-	YXEditableCell * cell = [[YXEditableCell alloc] initWithReuseIdentifier:reuseIdentifier];
-    
-	cell.target = target;
-	cell.action = action;
-	cell.placeholder = placeholder;
-    cell.labelText = labelText;
-    
-	return [cell autorelease];
-    
-}
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
-	YXEditableViewCell * cell = nil;
+	YXEditableViewCell * cell = (YXEditableViewCell *)reusableCell;
 
-	if (reusableCell == nil) {
-		cell = [[[YXEditableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-										  reuseIdentifier:self.reuseIdentifier] autorelease];
-	}
-	else {
-		cell = (YXEditableViewCell *)reusableCell;
-        [cell.textField removeTarget:nil action:@selector(_textDidEdit:) forControlEvents:UIControlEventEditingChanged];
-	}
+	if (!cell)
+		cell = [[[YXEditableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
 
-    if (labelText_) {
-        cell.textLabel.text = labelText_;
+    if (labelText) {
+        cell.textLabel.text = self.labelText;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
         cell.textLabel.textColor = [UIColor blackColor];
     }
+    
 	cell.placeholder = self.placeholder;
-	cell.target = self;
-	cell.action = @selector(textDidChange:);
-    [cell.textField addTarget:self action:@selector(_textDidEdit:) forControlEvents:UIControlEventEditingChanged];
+    if (self.value)
+        cell.textField.text = value;
+    
+    [cell.textField addTarget:self action:@selector(didChangeEdit:) forControlEvents:UIControlEventEditingChanged];
+    [cell.textField addTarget:self action:@selector(didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     if (self.image)
         cell.imageView.image = self.image;
+    
+    self.textField = cell.textField;
 
 	return cell;
 }
 
-- (void)textDidChange:(UITextField *)textField {
-	[self.target performSelector:self.action withObject:self withObject:textField];
+- (void)didEndEditing:(UITextField *)aTextField {
+    YXSenderBlock block = self.handler;
+    if (block) block(self);
 }
 
-- (void)_textDidEdit:(UITextField *)textField {
-    if (self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction])
-        [self.editTarget performSelector:self.editAction withObject:textField];
+- (void)didChangeEdit:(UITextField *)aTextField {
+    YXSenderBlock block = self.editHandler;
+    if (block) block(self);
 }
 
-@synthesize placeholder = placeholder_;
-@synthesize target = target_;
-@synthesize action = action_;
-@synthesize labelText = labelText_;
+- (void)setValue:(NSString *)aValue {
+    textField.text = aValue;
+}
+
+- (NSString *)value {
+    return textField.text;
+}
 
 @end

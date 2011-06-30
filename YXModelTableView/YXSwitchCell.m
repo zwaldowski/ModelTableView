@@ -8,35 +8,31 @@
 
 #import "YXSwitchCell.h"
 
-@interface YXSwitchCell ()
-- (void)switchControlChanged:(UISwitch *)switchControl;
-@property (nonatomic, copy, readwrite) NSString * title;
-@property (nonatomic, assign, readwrite) id target;
-@property (nonatomic, assign, readwrite) SEL initialValueGetter;
-@property (nonatomic, assign, readwrite) SEL action;
-@end
-
-
 @implementation YXSwitchCell
 
+@synthesize title, initialValueGetter, handler, togglesOnSelect;
+@synthesize editingAccessoryType, editHandler;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title
-					   target:(id)target initialValueGetter:(SEL)initialValueGetter
-					   action:(SEL)action
-{
-	YXSwitchCell * cell = [[YXSwitchCell alloc] initWithReuseIdentifier:reuseIdentifier];
-
-	cell.target = target;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler {
+	YXSwitchCell *cell = [YXSwitchCell new];
+    cell.reuseIdentifier = reuseIdentifier;
 	cell.title = title;
 	cell.initialValueGetter = initialValueGetter;
-	cell.action = action;
-    cell.togglesOnSelect = NO;
-
+	cell.handler = handler;
+    cell.togglesOnSelect = YES;
 	return [cell autorelease];
+}
+
+- (void)dealloc {
+    self.title = nil;
+    self.initialValueGetter = NULL;
+    self.handler = NULL;
+    self.editHandler = NULL;
+    
+	[super dealloc];
 }
 
 
@@ -48,7 +44,7 @@
 	UITableViewCell * cell = reusableCell;
 	UISwitch *switchControl = nil;
 
-	if (cell == nil) {
+	if (!cell) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
 		switchControl = [[UISwitch alloc] initWithFrame:CGRectZero];
 		cell.accessoryView = switchControl;
@@ -63,54 +59,33 @@
 	cell.textLabel.text = self.title;
     if (self.image)
         cell.imageView.image = self.image;
+    
+    YXValueGetterBlock block = self.initialValueGetter;
+    if (block)
+        switchControl.on = [block(self) boolValue];
 
-	if (self.target != nil && self.initialValueGetter != NULL) {
-		switchControl.on = [[self.target performSelector:self.initialValueGetter withObject:self] boolValue];
-	}
-
-	[switchControl addTarget:self action:@selector(switchControlChanged:)
-			forControlEvents:UIControlEventValueChanged];
+	[switchControl addTarget:self action:@selector(_switchControlChanged:) forControlEvents:UIControlEventValueChanged];
 
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView.editing) {
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    } else if (self.togglesOnSelect) {
+    if (!tableView.editing && self.togglesOnSelect) {
         UITableViewCell *theCell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *theSwitch = (UISwitch *)theCell.accessoryView;
         BOOL set = !theSwitch.on;
         [theSwitch setOn:set animated:YES];
-        [self switchControlChanged:theSwitch];
+        [self performSelector:@selector(switchControlChanged:) withObject:theSwitch];
 	}
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)switchControlChanged:(UISwitch *)switchControl {
-	if (self.target != nil && self.action != NULL) {
-		[self.target performSelector:self.action withObject:self withObject:switchControl];
-	}
+- (void)_switchControlChanged:(UISwitch *)switchControl {
+    YXValueSenderBlock block = self.handler;
+    if (block)
+        block(self, [NSNumber numberWithBool:switchControl.on]);
 }
 
-
-#pragma mark -
-#pragma mark Memory management
-
-
-@synthesize title = title_;
-@synthesize target = target_;
-@synthesize initialValueGetter = initialValueGetter_;
-@synthesize action = action_, togglesOnSelect;
-
-
-- (void)dealloc {
-	[title_ release];
-	target_ = nil;
-	action_ = NULL;
-	initialValueGetter_ = NULL;
-
-	[super dealloc];
-}
 
 @end

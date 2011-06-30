@@ -6,27 +6,14 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "YXAbstractCell.h"
 
-@interface YXSegmentedControlCell : YXAbstractCell {
-@private
-	NSArray * segmentedControlItems_;
-	id target_;
-	SEL action_;
-	SEL initialValueGetter_;
-}
+@interface YXSegmentedControlCell : YXAbstractCell
 
-@property (nonatomic, readonly, assign) id target;
-@property (nonatomic, readonly, assign) SEL action;
-@property (nonatomic, readonly, assign) SEL initialValueGetter;
-@property (nonatomic, readonly, retain) NSArray * segmentedControlItems;
+@property (nonatomic, copy) YXValueSenderBlock handler;
+@property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
+@property (nonatomic, retain) NSArray *segmentedControlItems;
 
-//
-// Target must implement initialValueGetter that looks like:
-// - (NSUInteger)indexOfSelectedItemForCell:(YXSegmentedControlCell *)cell;
-//
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier segmentedControlItems:(NSArray *)items target:(id)target
-					   action:(SEL)action initialValueGetter:(SEL)initialValueGetter;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier segmentedControlItems:(NSArray *)items handler:(YXValueSenderBlock)handler initialValueGetter:(YXValueGetterBlock)initialValueGetter;
 
 @end

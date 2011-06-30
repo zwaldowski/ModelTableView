@@ -6,32 +6,21 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
 @class YXAbstractCell;
 
-@interface YXSection : NSObject {
-@private
-	NSString * header_;
-	NSString * footer_;
+@interface YXSection : NSObject <NSFastEnumeration>
 
-	UIView * headerView_;
-	UIView * footerView_;
-
-	NSMutableArray * cells_;
-}
-
-@property (nonatomic, readonly) NSString * header;
-@property (nonatomic, readonly) NSString * footer;
+@property (nonatomic, copy) NSString *header;
+@property (nonatomic, copy) NSString *footer;
 
 @property (nonatomic, retain) UIView *footerView;
 @property (nonatomic, retain) UIView *headerView;
 
-- (id)init;
-- (id)initWithHeader:(NSString *)header footer:(NSString *)footer;
+@property (nonatomic, readonly) YXAbstractCell *lastCell;
+@property (nonatomic, readonly, getter=cellCount) NSInteger count;
 
 + (id)section;
++ (id)sectionWithHeader:(NSString *)header;
 + (id)sectionWithHeader:(NSString *)header footer:(NSString *)footer;
 
 - (void)addCell:(YXAbstractCell *)cell;
@@ -39,7 +28,7 @@
 
 - (YXAbstractCell *)cellAtIndex:(NSInteger)index;
 - (NSInteger)indexOfCell:(YXAbstractCell *)cell;
-- (NSInteger)cellCount;
 - (void)removeAllCells;
+
 
 @end

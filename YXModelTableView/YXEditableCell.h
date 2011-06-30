@@ -8,29 +8,16 @@
 
 #import "YXAbstractCell.h"
 
+@interface YXEditableCell : YXAbstractCell <YXModelCellSupportsEditing>
 
-@interface YXEditableCell : YXAbstractCell {
-@private
-	NSString * placeholder_;
-	id target_;
-	SEL action_;
-    NSString *labelText_;
-}
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier target:(id)target
-					   action:(SEL)action
-				  placeholder:(NSString *)placeholder;
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier target:(id)target
-					   action:(SEL)action
-                        label:(NSString *)labelText
-				  placeholder:(NSString *)placeholder;
-
-
-@property (nonatomic, copy, readonly) NSString * placeholder;
-@property (nonatomic, assign, readonly) id target;
-@property (nonatomic, assign, readonly) SEL action;
-
+@property (nonatomic, copy) NSString *placeholder;
 @property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, copy) NSString *value;
+@property (nonatomic, copy) YXSenderBlock handler;
+
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler;
 
 @end

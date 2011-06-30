@@ -8,30 +8,43 @@
 
 #import "YXEditableViewCell.h"
 
+@interface YXEditableViewCell()
+@property (nonatomic, retain, readwrite) UITextField *textField;
+@end
+
 @implementation YXEditableViewCell
 
 static const CGFloat kTextFieldMargin = 10.0f;
 
+@synthesize textField;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-        textField_ = [[UITextField alloc] initWithFrame:CGRectZero];
-		textField_.delegate = self;
-		textField_.font = [UIFont systemFontOfSize:17.0f];
-		textField_.textColor = [UIColor blackColor];
-		textField_.textAlignment = UITextAlignmentLeft;
-		textField_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        textField_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
-
-		self.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self addSubview:textField_];
+        UITextField *field = [UITextField new];
+		field.font = [UIFont systemFontOfSize:17.0f];
+		field.textColor = [UIColor blackColor];
+		field.textAlignment = UITextAlignmentLeft;
+        field.autocorrectionType = UITextAutocorrectionTypeNo;
+		field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		[self addSubview:field];
+        self.textField = field;
+        [field release];
+        
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self.textField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+}
+
 - (void)layoutSubviews {
 	[super layoutSubviews];
-    
-    CGFloat left = kTextFieldMargin;
+        
+    CGFloat left = self.contentView.bounds.origin.x + kTextFieldMargin;
     
     if (self.imageView.image) {
         left += self.imageView.image.size.width + 5;
@@ -44,33 +57,24 @@ static const CGFloat kTextFieldMargin = 10.0f;
         myRect.size.height -= 1;
         myRect.origin.x = kTextFieldMargin;
         self.textLabel.frame = myRect;
+    } else {
+        left += 30;
     }
     
-    CGRect inset = CGRectInset(self.contentView.bounds, left, 0);
-    inset.origin.y += 1;
-    textField_.frame = inset;
+    CGRect inset = CGRectMake(left, 0, self.contentView.bounds.size.width - left * 1.20, self.contentView.bounds.size.height);
+    textField.frame = inset;
 }
 
 - (void)setPlaceholder:(NSString *)newPlaceholder {
-	textField_.placeholder = newPlaceholder;
+	textField.placeholder = newPlaceholder;
 }
 
 - (NSString *)placeholder {
-	return textField_.placeholder;
+	return textField.placeholder;
 }
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-	[self.target performSelector:self.action withObject:textField];
-}
-
-@synthesize textField = textField_;
-@synthesize target = target_;
-@synthesize action = action_;
 
 - (void)dealloc {
-    [textField_ resignFirstResponder];
-	[textField_ release];
-
+    self.textField = nil;
     [super dealloc];
 }
 

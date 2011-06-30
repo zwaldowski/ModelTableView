@@ -8,72 +8,50 @@
 
 #import "YXCustomizableCell.h"
 
-@interface YXCustomizableCell ()
-
-@property (nonatomic, assign, readwrite) id target;
-@property (nonatomic, assign, readwrite) SEL buildingSelector;
-@property (nonatomic, assign, readwrite) SEL selectionHandler;
-@property (nonatomic, assign, readwrite) BOOL deselectsAutomatically;
-
-@end
-
-
 @implementation YXCustomizableCell
 
+@synthesize deselectsAutomatically, buildingHandler, selectionHandler;
+@synthesize editingAccessoryType, editHandler;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier target:(id)target buildingSelector:(SEL)buildingSelector selectionHandler:(SEL)selectionHandler {
-	YXCustomizableCell * cell = [[YXCustomizableCell alloc] initWithReuseIdentifier:reuseIdentifier];
-	cell.target = target;
-	cell.buildingSelector = buildingSelector;
-	cell.selectionHandler = selectionHandler;
-	cell.deselectsAutomatically = YES;
-	
-	return [cell autorelease];
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier buildingHandler:(YXCustomizableBuildingBlock)buildingHandler selectionHandler:(YXSenderBlock)selectionHandler {
+    YXCustomizableCell *cell = [YXCustomizableCell new];
+    
+    cell.reuseIdentifier = reuseIdentifier;
+    cell.buildingHandler = buildingHandler;
+    cell.selectionHandler = selectionHandler;
+    cell.deselectsAutomatically = YES;
+    
+    return [cell autorelease];
 }
 
+- (void)dealloc {
+    self.buildingHandler = NULL;
+    self.selectionHandler = NULL;
+    self.editHandler = NULL;
+}
 
 #pragma mark -
 #pragma mark Public interface
 
-
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
-	if (self.target != nil && self.buildingSelector != NULL) {
-		return [self.target performSelector:self.buildingSelector withObject:self withObject:reusableCell];
-	}
+    YXCustomizableBuildingBlock block = self.buildingHandler;
+    if (block)
+        return block(self, reusableCell);
 	return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.deselectsAutomatically) {
+	if (self.deselectsAutomatically)
 		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-	}
     
-    if (tableView.editing) {
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    } else if (self.target != nil && self.selectionHandler != NULL) {
-		[self.target performSelector:self.selectionHandler withObject:nil];
-	}
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-
-@synthesize deselectsAutomatically = deselectsAutomatically_;
-@synthesize target = target_;
-@synthesize buildingSelector = buildingSelector_;
-@synthesize selectionHandler = selectionHandler_;
-
-
-- (void)dealloc {
-	target_ = nil;
-	
-	[super dealloc];
+    YXSenderBlock block = self.selectionHandler;
+    if (!tableView.editing && block)
+		block(self);
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 @end

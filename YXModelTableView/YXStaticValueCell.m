@@ -8,26 +8,22 @@
 
 #import "YXStaticValueCell.h"
 
-
 @implementation YXStaticValueCell
 
-@synthesize value = _value;
+@synthesize value;
 
 - (void)dealloc {
 	self.value = nil;
-
 	[super dealloc];
 }
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title 
-					value:(id)value 
-{
-	YXStaticValueCell * cell = [[YXStaticValueCell alloc] initWithReuseIdentifier:reuseIdentifier];
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title value:(id)value {
+	YXStaticValueCell * cell = [YXStaticValueCell new];
+    cell.reuseIdentifier = reuseIdentifier;
 	cell.title = title;
 	cell.object = cell;
 	cell.key = @"value";
 	cell.value = value;
-	
 	return [cell autorelease];
 }
 

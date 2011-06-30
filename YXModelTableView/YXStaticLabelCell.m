@@ -12,44 +12,36 @@
 @implementation YXStaticLabelCell
 
 @synthesize text, font, color, alignment;
+@synthesize editingAccessoryType, editHandler;
 
 + (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier text:(NSString *)text {
-	YXStaticLabelCell * cell = [[YXStaticLabelCell alloc] initWithReuseIdentifier:reuseIdentifier];
-	cell.text = text;
-	return [cell autorelease];
+	return [self cellWithReuseIdentifier:reuseIdentifier text:text font:nil color:nil alignment:UITextAlignmentLeft];
 }
 
 + (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier text:(NSString *)text font:(UIFont *)font color:(UIColor *)color alignment:(UITextAlignment)align {
-	YXStaticLabelCell * cell = [[YXStaticLabelCell alloc] initWithReuseIdentifier:reuseIdentifier];
+	YXStaticLabelCell * cell = [YXStaticLabelCell new];
+    cell.reuseIdentifier = reuseIdentifier;
 	cell.text = text;
-    cell.font = font;
-    cell.color = color;
-    cell.alignment = align;
+    cell.font = (font) ? font : [UIFont boldSystemFontOfSize:17];
+    cell.color = (color) ? color : [UIColor blackColor];
+    cell.alignment = (align) ? align : UITextAlignmentLeft;
 	return [cell autorelease];
-}
-
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-    if ((self = [super initWithReuseIdentifier:reuseIdentifier])) {
-        self.font = [UIFont boldSystemFontOfSize:17];
-        self.color = [UIColor blackColor];
-        self.alignment = UITextAlignmentLeft;
-    }
-    return self;
 }
 
 - (void)dealloc {
     self.text = nil;
     self.font = nil;
     self.color = nil;
+    self.editHandler = NULL;
+    
     [super dealloc];
 }
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	UITableViewCell * cell = reusableCell;
     
-	if (cell == nil) {
+	if (!cell)
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
-	}
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.textLabel.text = self.text;
@@ -64,15 +56,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    if (tableView.editing) {
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    }
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 - (CGFloat)height {
-    CGFloat customHeight = [self.text sizeWithFont:self.font].height + 10.0f;
-    return (customHeight > 44.0f) ? customHeight : 44.0f;
+    return [self.text sizeWithFont:self.font].height + 10.0f;
 }
 
 @end

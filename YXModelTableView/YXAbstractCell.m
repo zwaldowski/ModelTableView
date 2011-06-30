@@ -11,38 +11,38 @@
 
 @implementation YXAbstractCell
 
-@synthesize reuseIdentifier, userInfo, image, height, style, editingAccessoryType, editable, editTarget, editAction;
+@synthesize reuseIdentifier, image;
 
-
-#pragma mark -
-#pragma mark Object lifecycle  
-
-- (id)initWithReuseIdentifier:(NSString *)aReuseIdentifier {
-	if ((self = [super init])) {
-		self.reuseIdentifier = aReuseIdentifier;
-	}
-	return self;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier {
+    YXAbstractCell *cell = [[self class] new];
+    cell.reuseIdentifier = reuseIdentifier;
+    return [cell autorelease];
 }
 
 #pragma mark -
 #pragma mark Public interface
-
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell  {
 	@throw @"abstract method";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.editingAccessoryType == UITableViewCellAccessoryNone && self.editable && tableView.editing && self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction]) {
-        [self.editTarget performSelector:self.editAction withObject:self];
-    }}
+    if (tableView.editing && [self conformsToProtocol:@protocol(YXModelCellSupportsEditing)]) {
+        id <YXModelCellSupportsEditing> inst = (id <YXModelCellSupportsEditing>)self;
+        if (inst.editingAccessoryType == UITableViewCellAccessoryNone && inst.editHandler)
+            inst.editHandler(inst);
+    }
+}
 
 - (void)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // nothing
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    if (self.editingAccessoryType != UITableViewCellAccessoryNone && tableView.editing && self.editTarget != nil && self.editAction != NULL && [self.editTarget respondsToSelector:self.editAction]) {
-        [self.editTarget performSelector:self.editAction withObject:self];
+    if (tableView.editing && [self conformsToProtocol:@protocol(YXModelCellSupportsEditing)]) {
+        id <YXModelCellSupportsEditing> inst = (id <YXModelCellSupportsEditing>)self;
+        if (inst.editingAccessoryType != UITableViewCellAccessoryNone && inst.editHandler)
+            inst.editHandler(inst);
     }
 }
 
@@ -55,7 +55,6 @@
 
 - (void)dealloc {
     self.reuseIdentifier = nil;
-    self.userInfo = nil;
     self.image = nil;
 	
 	[super dealloc];

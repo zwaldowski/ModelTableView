@@ -9,36 +9,31 @@
 #import "YXSegmentedControlCell.h"
 #import "YXSegmentedControlViewCell.h"
 
-@interface YXSegmentedControlCell ()
-
-@property (nonatomic, readwrite, assign) id target;
-@property (nonatomic, readwrite, assign) SEL action;
-@property (nonatomic, readwrite, assign) SEL initialValueGetter;
-@property (nonatomic, readwrite, retain) NSArray * segmentedControlItems;
-
-@end
-
-
 @implementation YXSegmentedControlCell
 
+@synthesize segmentedControlItems, handler, initialValueGetter;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier segmentedControlItems:(NSArray *)items target:(id)target
-					   action:(SEL)action initialValueGetter:(SEL)initialValueGetter
-{
-	YXSegmentedControlCell * cell = [[YXSegmentedControlCell alloc] initWithReuseIdentifier:reuseIdentifier];
-
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier segmentedControlItems:(NSArray *)items handler:(YXValueSenderBlock)handler initialValueGetter:(YXValueGetterBlock)initialValueGetter {
+	YXSegmentedControlCell *cell = [YXSegmentedControlCell new];
+    cell.reuseIdentifier = reuseIdentifier;
 	cell.segmentedControlItems = items;
-	cell.target = target;
-	cell.action = action;
+	cell.handler = handler;
 	cell.initialValueGetter = initialValueGetter;
 
 	return [cell autorelease];
 }
 
+- (void)dealloc {
+    self.handler = nil;
+    self.initialValueGetter = nil;
+    self.segmentedControlItems = nil;
+    
+    [super dealloc];
+}
 
 #pragma mark -
 #pragma mark Public interface
@@ -46,35 +41,23 @@
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	YXSegmentedControlViewCell * cell = (YXSegmentedControlViewCell *)reusableCell;
+    if (![cell isKindOfClass:[YXSegmentedControlViewCell class]])
+        cell = nil;
+    
+	if (cell)
+        [cell setItems:self.segmentedControlItems];
+    else
+		cell = [[[YXSegmentedControlViewCell alloc] initWithSegmentedControlItems:self.segmentedControlItems reuseIdentifier:self.reuseIdentifier] autorelease];
+        
 
-	if (cell == nil) {
-		cell = [[[YXSegmentedControlViewCell alloc] initWithSegmentedControlItems:self.segmentedControlItems
-																  reuseIdentifier:self.reuseIdentifier] autorelease];
-	}
-
-	if (self.target != nil) {
-		if (self.action != NULL) {
-			[cell.segmentedControl addTarget:self action:@selector(segmentedControlDidChangeValue:)
-							forControlEvents:UIControlEventValueChanged];
-		}
-		if (self.initialValueGetter != NULL) {
-
-			NSMethodSignature * signature = [self.target methodSignatureForSelector:self.initialValueGetter];
-			NSInvocation * invocation = [NSInvocation invocationWithMethodSignature:signature];
-
-			[invocation setTarget:self.target];
-			[invocation setSelector:self.initialValueGetter];
-			[invocation setArgument:self atIndex:2];
-
-			[invocation invoke];
-
-			NSInteger selectedSegmentIndex = -1;
-			[invocation getReturnValue:&selectedSegmentIndex];
-
-			cell.segmentedControl.selectedSegmentIndex = selectedSegmentIndex;
-		}
-	}
-
+    [cell.segmentedControl addTarget:self action:@selector(segmentedControlDidChangeValue:) forControlEvents:UIControlEventValueChanged];
+    
+    if (self.initialValueGetter) {
+        YXValueGetterBlock block = self.initialValueGetter;
+        NSNumber *value = block(self);
+        cell.segmentedControl.selectedSegmentIndex = [value integerValue];
+    }
+    
 	return cell;
 }
 
@@ -83,71 +66,9 @@
 }
 
 - (void)segmentedControlDidChangeValue:(UISegmentedControl *)segmentedControl {
-	if (self.target != nil && self.action != NULL) {
-		[self.target performSelector:self.action withObject:self withObject:segmentedControl];
-	}
+    YXValueSenderBlock block = self.handler;
+    if (block)
+        block(self, [NSNumber numberWithInteger:segmentedControl.selectedSegmentIndex]);
 }
-
-#pragma mark -
-#pragma mark Overrides
-
-- (UITableViewCellAccessoryType)editingAccessoryType {
-    return UITableViewCellAccessoryNone;
-}
-
-- (void)setEditingAccessoryType:(UITableViewCellAccessoryType)editingAccessoryType {
-    if (editingAccessoryType != UITableViewCellAccessoryNone) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot have an editing accessory.", NSStringFromClass([self class])];
-    }
-}
-
-- (BOOL)editable {
-    return NO;
-}
-
--(void)setEditable:(BOOL)editable {
-    if (editable) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
-    }
-}
-
-- (id)editTarget {
-    return nil;
-}
-
-- (void)setEditTarget:(id)editTarget {
-    if (editTarget) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
-    }
-}
-
-- (SEL)editAction {
-    return NULL;
-}
-
-- (void)setEditAction:(SEL)editAction {
-    if (editAction) {
-        @throw [NSString stringWithFormat:@"A %@ cell cannot be made editable", NSStringFromClass([self class])];
-    }
-}
-
-#pragma mark -
-#pragma mark Memory management
-
-
-@synthesize segmentedControlItems = segmentedControlItems_;
-@synthesize target = target_;
-@synthesize action = action_;
-@synthesize initialValueGetter = initialValueGetter_;
-
-- (void)dealloc {
-	[segmentedControlItems_ release];
-	target_ = nil;
-	action_ = NULL;
-	initialValueGetter_ = NULL;
-
-    [super dealloc];
-}
-
 
 @end

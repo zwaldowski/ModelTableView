@@ -8,50 +8,43 @@
 
 #import "YXButtonCell.h"
 
-@interface YXButtonCell ()
-
-@property (nonatomic, copy, readwrite) NSString * title;
-@property (nonatomic, assign, readwrite) id target;
-@property (nonatomic, assign, readwrite) SEL action;
-
-@end
-
-
 @implementation YXButtonCell
 
+@synthesize title, handler;
+@synthesize editingAccessoryType, editHandler;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
-
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title
-					   target:(id)target action:(SEL)action
-{
-	YXButtonCell * cell = [[YXButtonCell alloc] initWithReuseIdentifier:reuseIdentifier];
-
-	cell.target = target;
-	cell.action = action;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title handler:(YXSenderBlock)handler {
+	YXButtonCell * cell = [YXButtonCell new];
+    
+    cell.reuseIdentifier = reuseIdentifier;
+	cell.handler = handler;
 	cell.title = title;
-
+    
 	return [cell autorelease];
 }
 
+- (void)dealloc {
+    self.editHandler = NULL;
+    self.handler = NULL;
+    self.title = nil;
+    
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Public interface
 
-
-- (UITableViewCell*)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
-	UITableViewCell * cell = reusableCell;
-	if (cell == nil) {
+- (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
+	UITableViewCell *cell = reusableCell;
+	if (!cell)
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
-	}
+    
 	cell.textLabel.text = self.title;
 	cell.textLabel.textAlignment = UITextAlignmentCenter;
-	cell.textLabel.textColor = [UIColor colorWithRed:50.0f/255.0f
-											   green:79.0f/255.0f
-												blue:133.0f/255.0f
-											   alpha:1.0f];
+	cell.textLabel.textColor = [UIColor colorWithRed:0.20f green:0.31f blue:0.52f alpha:1.0f];
     if (self.image)
         cell.imageView.image = self.image;
     
@@ -61,29 +54,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (tableView.editing) {
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    } else if (self.target != nil && self.action != NULL) {
-		[self.target performSelector:self.action withObject:self];
-	}
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-
-@synthesize title = title_;
-@synthesize target = target_;
-@synthesize action = action_;
-
-
-- (void)dealloc {
-	target_ = nil;
-	action_ = NULL;
-	[title_ release];
-
-	[super dealloc];
+    if (!tableView.editing && self.handler)
+		self.handler(self);
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 @end

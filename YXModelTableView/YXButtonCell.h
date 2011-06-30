@@ -6,25 +6,13 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "YXAbstractCell.h"
 
-@interface YXButtonCell : YXAbstractCell {
-@private
-	NSString * title_;
-	id target_;
-	SEL action_;
-}
+@interface YXButtonCell : YXAbstractCell <YXModelCellSupportsEditing>
 
-@property (nonatomic, copy, readonly) NSString * title;
-@property (nonatomic, assign, readonly) id target;
-@property (nonatomic, assign, readonly) SEL action;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) YXSenderBlock handler;
 
-//
-// Target must implement following action selector
-//   - (void)buttonTapped:(YXButtonCell*)cell;
-//
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title 
-					   target:(id)delegate action:(SEL)selector;
++ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title handler:(YXSenderBlock)handler;
 
 @end

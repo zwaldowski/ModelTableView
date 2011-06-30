@@ -6,19 +6,11 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@interface YXSegmentedControlViewCell : UITableViewCell
 
+@property (nonatomic, retain, readonly) UISegmentedControl *segmentedControl;
 
-@interface YXSegmentedControlViewCell : UITableViewCell {
-@private
-	UISegmentedControl * segmentedControl_;
-}
-
-@property (nonatomic, readonly) UISegmentedControl * segmentedControl;
-
-// Designated initializer
 - (id)initWithSegmentedControlItems:(NSArray *)items reuseIdentifier:(NSString *)reuseIdentifier;
-
 - (void)setItems:(NSArray *)items;
 
 @end
