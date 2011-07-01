@@ -10,10 +10,10 @@
 
 @interface YXKVCCheckmarkCell : YXCheckmarkCell
 
-@property (nonatomic, copy) YXSenderBlock updateAction;
+@property (nonatomic, copy) YXBlock updateAction;
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, retain) id object;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title object:(id)object key:(NSString *)key;
++ (id)cellWithTitle:(NSString *)title object:(id)object key:(NSString *)key;
 
 @end

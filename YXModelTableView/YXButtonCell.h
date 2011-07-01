@@ -6,13 +6,13 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import "YXAbstractCell.h"
+#import "YXModelCell.h"
 
-@interface YXButtonCell : YXAbstractCell <YXModelCellSupportsEditing>
+@interface YXButtonCell : NSObject <YXModelCellWithEditing>
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) YXSenderBlock handler;
+@property (nonatomic, copy) YXBlock handler;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title handler:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title handler:(YXBlock)handler;
 
 @end

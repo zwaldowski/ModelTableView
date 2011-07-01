@@ -15,54 +15,65 @@
 
 @implementation YXEditableCell
 
-@synthesize placeholder, labelText, value, handler, textField;
-@synthesize editingAccessoryType, editHandler;
+@synthesize placeholder, title, value, handler, textField;
+@synthesize image, editingAccessoryType, editHandler;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder {
-    return [self cellWithReuseIdentifier:reuseIdentifier label:labelText placeholder:placeholder value:nil handler:NULL];
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
+    return [self cellWithTitle:title placeholder:placeholder value:nil handler:NULL];
 }
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value {
-    return [self cellWithReuseIdentifier:reuseIdentifier label:labelText placeholder:placeholder value:value handler:NULL];
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value {
+    return [self cellWithTitle:title placeholder:placeholder value:value handler:NULL];
 }
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler {
-    return [self cellWithReuseIdentifier:reuseIdentifier label:labelText placeholder:placeholder value:nil handler:handler];
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler {
+    return [self cellWithTitle:title placeholder:placeholder value:nil handler:handler];
 }
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler {
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler {
     YXEditableCell * cell = [YXEditableCell new];
-    cell.reuseIdentifier = reuseIdentifier;
-    cell.labelText = labelText;
+    
+    cell.title = title;
     cell.placeholder = placeholder;
     cell.value = value;
     cell.handler = handler;
+    
     return [cell autorelease];
 }
 
 - (void)dealloc {
-	self.placeholder = nil;
-    self.labelText = nil;
-    self.value = nil;
-    self.handler = nil;
-    self.textField = nil;
     self.editHandler = NULL;
+	self.placeholder = nil;
+    self.textField = nil;
+    self.handler = nil;
+    self.value = nil;
+    self.title = nil;
+    self.image = nil;
     
 	[super dealloc];
 }
 
+#pragma mark -
+#pragma mark YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	YXEditableViewCell * cell = (YXEditableViewCell *)reusableCell;
 
 	if (!cell)
 		cell = [[[YXEditableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
+    
+    [cell.textField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEditingEvents];
 
-    if (labelText) {
-        cell.textLabel.text = self.labelText;
+    if (self.title) {
+        cell.textLabel.text = self.title;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
         cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textAlignment = UITextAlignmentLeft;
     }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.imageView.image = self.image;
     
 	cell.placeholder = self.placeholder;
     if (self.value)
@@ -70,13 +81,18 @@
     
     [cell.textField addTarget:self action:@selector(didChangeEdit:) forControlEvents:UIControlEventEditingChanged];
     [cell.textField addTarget:self action:@selector(didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
-    if (self.image)
-        cell.imageView.image = self.image;
     
     self.textField = cell.textField;
 
 	return cell;
 }
+
+- (NSString *)reuseIdentifier {
+    return @"YXEditableCell";
+}
+
+#pragma mark -
+#pragma mark Delegates
 
 - (void)didEndEditing:(UITextField *)aTextField {
     YXSenderBlock block = self.handler;
@@ -87,6 +103,9 @@
     YXSenderBlock block = self.editHandler;
     if (block) block(self);
 }
+
+#pragma mark -
+#pragma mark Properties
 
 - (void)setValue:(NSString *)aValue {
     textField.text = aValue;

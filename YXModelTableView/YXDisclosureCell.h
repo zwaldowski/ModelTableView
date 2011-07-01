@@ -6,17 +6,17 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import "YXAbstractCell.h"
+#import "YXModelCell.h"
 
-@interface YXDisclosureCell : YXAbstractCell
+@interface YXDisclosureCell : NSObject <YXModelCell>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *description;
 @property (nonatomic, copy) YXSenderBlock handler;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title description:(NSString *)description;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title handler:(YXSenderBlock)handler;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title description:(NSString *)description handler:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title;
++ (id)cellWithTitle:(NSString *)title description:(NSString *)description;
++ (id)cellWithTitle:(NSString *)title handler:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title description:(NSString *)description handler:(YXSenderBlock)handler;
 
 @end

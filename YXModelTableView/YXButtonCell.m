@@ -11,15 +11,14 @@
 @implementation YXButtonCell
 
 @synthesize title, handler;
-@synthesize editingAccessoryType, editHandler;
+@synthesize image, editingAccessoryType, editHandler;
 
 #pragma mark -
 #pragma mark Object lifecycle
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title handler:(YXSenderBlock)handler {
-	YXButtonCell * cell = [YXButtonCell new];
++ (id)cellWithTitle:(NSString *)title handler:(YXBlock)handler {
+	YXButtonCell *cell = [YXButtonCell new];
     
-    cell.reuseIdentifier = reuseIdentifier;
 	cell.handler = handler;
 	cell.title = title;
     
@@ -30,12 +29,13 @@
     self.editHandler = NULL;
     self.handler = NULL;
     self.title = nil;
+    self.image = nil;
     
 	[super dealloc];
 }
 
 #pragma mark -
-#pragma mark Public interface
+#pragma mark YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	UITableViewCell *cell = reusableCell;
@@ -43,21 +43,19 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
     
 	cell.textLabel.text = self.title;
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 	cell.textLabel.textAlignment = UITextAlignmentCenter;
 	cell.textLabel.textColor = [UIColor colorWithRed:0.20f green:0.31f blue:0.52f alpha:1.0f];
-    if (self.image)
-        cell.imageView.image = self.image;
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (!tableView.editing && self.handler)
-		self.handler(self);
-    
-    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    YXBlock block = self.handler;
+	if (block) block();
 }
 
 @end

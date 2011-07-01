@@ -8,26 +8,27 @@
 
 #import "YXKVCCheckmarkCell.h"
 
-
 @implementation YXKVCCheckmarkCell
 
 @synthesize key, object, updateAction;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title object:(id)object key:(NSString *)key {
+#pragma mark -
+#pragma mark Object lifecycle
+
++ (id)cellWithTitle:(NSString *)title object:(id)object key:(NSString *)key {
 	YXKVCCheckmarkCell * cell = [YXKVCCheckmarkCell new];
     
-    cell.reuseIdentifier = reuseIdentifier;
 	cell.title = title;
 	cell.object = object;
 	cell.key = key;
-    cell.initialValueGetter = ^NSNumber *(YXCheckmarkCell *cell){
+    cell.initialValueGetter = ^NSNumber *(YXKVCCheckmarkCell *cell){
         return [object valueForKey:key];
     };
-    cell.handler = ^(YXCheckmarkCell *cell, NSNumber *value){
+    cell.handler = ^(YXKVCCheckmarkCell *cell, NSNumber *value){
         [object setValue:value forKey:key];
-        YXSenderBlock block = [(YXKVCCheckmarkCell *)cell updateAction];
-        if (block)
-            block(cell);
+        
+        YXBlock block = cell.updateAction;
+        if (block) block();
     };
 
 	return [cell autorelease];

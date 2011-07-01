@@ -17,8 +17,7 @@
 
 @implementation YXModelTableViewController
 
-@synthesize sections, accessoryGroup, tableView,
-            tableViewStyle, lastSelectedIndexPath;
+@synthesize sections, accessoryGroup, tableView, tableViewStyle, lastSelectedIndexPath;
 
 #pragma mark NSObject
 
@@ -117,8 +116,7 @@
 #pragma mark -
 #pragma mark Table view data source
 
-
-- (YXAbstractCell *)modelCellAtIndexPath:(NSIndexPath *)indexPath {
+- (id <YXModelCell>)modelCellAtIndexPath:(NSIndexPath *)indexPath {
 	YXSection *section = [self.sections objectAtIndex:indexPath.section];
 	return [section cellAtIndex:indexPath.row];
 }
@@ -171,9 +169,20 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	YXAbstractCell *cell = [self modelCellAtIndexPath:indexPath];
-	UITableViewCell *reusableCell = [aTableView dequeueReusableCellWithIdentifier:cell.reuseIdentifier];
+	id <YXModelCell> cell = [self modelCellAtIndexPath:indexPath];
+    
+    NSString *reuseIdentifier = nil;
+    if ([cell respondsToSelector:@selector(reuseIdentifier)])
+        reuseIdentifier = cell.reuseIdentifier;
+    
+    if (!reuseIdentifier || [reuseIdentifier isEqualToString:@""])
+        reuseIdentifier = @"YXCell";
+    
+	UITableViewCell *reusableCell = [aTableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	UITableViewCell *newCell = [cell tableViewCellWithReusableCell:reusableCell];
+    
+    if ([cell respondsToSelector:@selector(image)])
+        newCell.imageView.image = cell.image;
 
 	if (reusableCell && newCell != reusableCell)
 		NSLog(@"WARNING: reusable cell for id %@ was ignored", cell.reuseIdentifier);
@@ -182,10 +191,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YXAbstractCell *cell = [self modelCellAtIndexPath:indexPath];
+    id <YXModelCell> cell = [self modelCellAtIndexPath:indexPath];
+    
     CGFloat customHeight = 0.0f;
     if ([cell respondsToSelector:@selector(height)])
         customHeight = [cell height];
+    
     return (customHeight > 44.0f) ? customHeight : 44.0f;
 }
 
@@ -195,14 +206,27 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.lastSelectedIndexPath = indexPath;
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-	YXAbstractCell * cell = [self modelCellAtIndexPath:indexPath];
-	[cell tableView:aTableView didSelectRowAtIndexPath:indexPath];
+	id <YXModelCell> cell = [self modelCellAtIndexPath:indexPath];
+    
+    if (tableView.editing && [cell conformsToProtocol:@protocol(YXModelCellWithEditing)]) {
+        id <YXModelCellWithEditing> inst = (id <YXModelCellWithEditing>) cell;
+        if (inst.editingAccessoryType == UITableViewCellAccessoryDisclosureIndicator && inst.editHandler)
+            inst.editHandler(inst);
+    } else if ([cell respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
+        [cell tableView:aTableView didSelectRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)aTableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	YXAbstractCell * cell = [self modelCellAtIndexPath:indexPath];
-	[cell tableView:aTableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+	id <YXModelCell> cell = [self modelCellAtIndexPath:indexPath];
+    
+    if (tableView.editing && [cell conformsToProtocol:@protocol(YXModelCellWithEditing)]) {
+        id <YXModelCellWithEditing> inst = (id <YXModelCellWithEditing>) cell;
+        if (inst.editingAccessoryType == UITableViewCellAccessoryDetailDisclosureButton && inst.editHandler)
+            inst.editHandler(inst);
+    } else if ([cell respondsToSelector:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)])
+        [cell tableView:aTableView accessoryButtonTappedForRowWithIndexPath:indexPath];
 }
 
 #pragma mark -

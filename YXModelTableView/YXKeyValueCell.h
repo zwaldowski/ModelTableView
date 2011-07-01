@@ -1,14 +1,14 @@
 //
-//  YXKVOSwitchCell.h
+//  YXKeyValueCell.h
 //  YXModelTableViews
 //
-//  Created by Mikhail Kalugin on 5/11/10.
+//  Created by Mikhail Kalugin on 6/29/10.
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import "YXSwitchCell.h"
+#import "YXDisclosureCell.h"
 
-@interface YXKVCSwitchCell : YXSwitchCell
+@interface YXKeyValueCell : YXDisclosureCell <YXModelCellWithEditing>
 
 @property (nonatomic, retain) id object;
 @property (nonatomic, copy) NSString *key;

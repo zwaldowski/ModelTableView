@@ -6,18 +6,18 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import "YXAbstractCell.h"
+#import "YXModelCell.h"
 
-@interface YXEditableCell : YXAbstractCell <YXModelCellSupportsEditing>
+@interface YXEditableCell : NSObject <YXModelCellWithEditing>
 
 @property (nonatomic, copy) NSString *placeholder;
-@property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, copy) YXSenderBlock handler;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier label:(NSString *)labelText placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value;
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler;
 
 @end

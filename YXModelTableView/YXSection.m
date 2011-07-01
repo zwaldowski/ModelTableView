@@ -8,10 +8,6 @@
 
 #import "YXSection.h"
 
-@interface YXSection()
-@property (nonatomic, retain) NSMutableArray *cells;
-@end
-
 @implementation YXSection
 
 @synthesize header, footer, headerView, footerView, cells;
@@ -56,19 +52,19 @@
 #pragma mark -
 #pragma mark Public interface
 
-- (void)addCell:(YXAbstractCell *)cell {
+- (void)addCell:(id <YXModelCell>)cell {
 	[self.cells addObject:cell];
 }
 
-- (void)removeCell:(YXAbstractCell *)cell {
+- (void)removeCell:(id <YXModelCell>)cell {
 	[self.cells removeObject:cell];
 }
 
-- (YXAbstractCell *)cellAtIndex:(NSInteger)index {
+- (id <YXModelCell>)cellAtIndex:(NSInteger)index {
     return [self.cells objectAtIndex:index];
 }
 
-- (NSInteger)indexOfCell:(YXAbstractCell *)cell {
+- (NSInteger)indexOfCell:(id <YXModelCell>)cell {
     return [self.cells indexOfObject:cell];
 }
 
@@ -80,7 +76,7 @@
     [self.cells removeAllObjects];
 }
 
-- (YXAbstractCell *)lastCell {
+- (id <YXModelCell>)lastCell {
     return [self.cells lastObject];
 }
 

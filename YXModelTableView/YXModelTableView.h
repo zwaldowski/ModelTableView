@@ -6,9 +6,8 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import "YXModelTableViewController.h"
+#import "YXModelCell.h"
 #import "YXSection.h"
-#import "YXAbstractCell.h"
 #import "YXCustomizableCell.h"
 #import "YXButtonCell.h"
 #import "YXDisclosureCell.h"
@@ -19,6 +18,6 @@
 #import "YXKVCCheckmarkCell.h"
 #import "YXCheckmarkCellGroup.h"
 #import "YXEditableCell.h"
-#import "YXKVCValueCell.h"
-#import "YXStaticValueCell.h"
-#import "YXStaticLabelCell.h"
+#import "YXKeyValueCell.h"
+#import "YXLabelCell.h"
+#import "YXModelTableViewController.h"

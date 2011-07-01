@@ -15,18 +15,16 @@
 #pragma mark -
 #pragma mark Object lifecycle
 
-
-+ (id)cellWithReuseIdentifier:(NSString*)reuseIdentifier title:(NSString *)title object:(id)object key:(NSString *)key {
++ (id)cellWithTitle:(NSString *)title object:(id)object key:(NSString *)key {
 	YXKVCSwitchCell *cell = [YXKVCSwitchCell new];
     
-    cell.reuseIdentifier = reuseIdentifier;
-	cell.title = title;
+    cell.title = title;
 	cell.object = object;
 	cell.key = key;
-    cell.initialValueGetter = ^NSNumber *(YXSwitchCell *cell) {
+    cell.initialValueGetter = ^NSNumber *(YXKVCSwitchCell *cell) {
         return [object valueForKey:key];
     };
-    cell.handler = ^(YXSwitchCell *cell, NSNumber *value){
+    cell.handler = ^(YXKVCSwitchCell *cell, NSNumber *value){
         [object setValue:value forKey:key];
     };
 

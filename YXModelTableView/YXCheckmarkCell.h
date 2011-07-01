@@ -6,19 +6,19 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import "YXAbstractCell.h"
+#import "YXModelCell.h"
 
 @class YXCheckmarkCellGroup;
 
-@interface YXCheckmarkCell : YXAbstractCell
+@interface YXCheckmarkCell : NSObject <YXModelCell>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
 @property (nonatomic, copy) YXValueSenderBlock handler;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title group:(YXCheckmarkCellGroup *)group;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title group:(YXCheckmarkCellGroup *)group selected:(BOOL)selected;
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier title:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title group:(YXCheckmarkCellGroup *)group;
++ (id)cellWithTitle:(NSString *)title group:(YXCheckmarkCellGroup *)group selected:(BOOL)selected;
++ (id)cellWithTitle:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler;
 
 - (void)update;
 

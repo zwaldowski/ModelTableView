@@ -6,17 +6,15 @@
 //  Copyright 2010 Yandex. All rights reserved.
 //
 
-#import "YXAbstractCell.h"
+#import "YXModelCell.h"
 
-@class YXCustomizableCell;
+typedef UITableViewCell *(^YXCustomizableBuildingBlock)(id <YXModelCell> cell, UITableViewCell *reusable);
 
-typedef UITableViewCell *(^YXCustomizableBuildingBlock)(YXCustomizableCell *cell, UITableViewCell *reusable);
+@interface YXCustomizableCell : NSObject <YXModelCellWithEditing>
 
-@interface YXCustomizableCell : YXAbstractCell <YXModelCellSupportsEditing>
-
+@property (nonatomic, copy) NSString *customReuseIdentifier;
 @property (nonatomic, copy) YXSenderBlock selectionHandler;
 @property (nonatomic, copy) YXCustomizableBuildingBlock buildingHandler;
-@property (nonatomic) BOOL deselectsAutomatically;
 
 + (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier buildingHandler:(YXCustomizableBuildingBlock)buildingHandler selectionHandler:(YXSenderBlock)selectionHandler;
 

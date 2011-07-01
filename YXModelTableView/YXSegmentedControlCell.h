@@ -6,14 +6,14 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
-#import "YXAbstractCell.h"
+#import "YXModelCell.h"
 
-@interface YXSegmentedControlCell : YXAbstractCell
+@interface YXSegmentedControlCell : NSObject <YXModelCell>
 
 @property (nonatomic, copy) YXValueSenderBlock handler;
 @property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
-@property (nonatomic, retain) NSArray *segmentedControlItems;
+@property (nonatomic, copy) NSArray *segmentedControlItems;
 
-+ (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier segmentedControlItems:(NSArray *)items handler:(YXValueSenderBlock)handler initialValueGetter:(YXValueGetterBlock)initialValueGetter;
++ (id)cellWithSegmentedControlItems:(NSArray *)items handler:(YXValueSenderBlock)handler initialValueGetter:(YXValueGetterBlock)initialValueGetter;
 
 @end

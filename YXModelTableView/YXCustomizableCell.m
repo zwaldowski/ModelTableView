@@ -10,7 +10,7 @@
 
 @implementation YXCustomizableCell
 
-@synthesize deselectsAutomatically, buildingHandler, selectionHandler;
+@synthesize customReuseIdentifier, buildingHandler, selectionHandler;
 @synthesize editingAccessoryType, editHandler;
 
 #pragma mark -
@@ -19,10 +19,9 @@
 + (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier buildingHandler:(YXCustomizableBuildingBlock)buildingHandler selectionHandler:(YXSenderBlock)selectionHandler {
     YXCustomizableCell *cell = [YXCustomizableCell new];
     
-    cell.reuseIdentifier = reuseIdentifier;
+    cell.customReuseIdentifier = reuseIdentifier;
     cell.buildingHandler = buildingHandler;
     cell.selectionHandler = selectionHandler;
-    cell.deselectsAutomatically = YES;
     
     return [cell autorelease];
 }
@@ -34,24 +33,21 @@
 }
 
 #pragma mark -
-#pragma mark Public interface
+#pragma mark YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
     YXCustomizableBuildingBlock block = self.buildingHandler;
-    if (block)
-        return block(self, reusableCell);
+    if (block) return block(self, reusableCell);
 	return nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.deselectsAutomatically)
-		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {    
     YXSenderBlock block = self.selectionHandler;
-    if (!tableView.editing && block)
-		block(self);
-    
-    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    if (block) block(self);
+}
+
+- (NSString *)reuseIdentifier {
+    return self.customReuseIdentifier;
 }
 
 @end
