@@ -21,14 +21,15 @@
 	cell.title = title;
 	cell.object = object;
 	cell.key = key;
-    cell.initialValueGetter = ^NSNumber *(YXKVCCheckmarkCell *cell){
-        return [object valueForKey:key];
+    cell.initialValueGetter = ^BOOL(YXKVCCheckmarkCell *cell){
+        return [[object valueForKey:key] boolValue];
     };
-    cell.handler = ^(YXKVCCheckmarkCell *cell, NSNumber *value){
-        [object setValue:value forKey:key];
+    cell.handler = ^(YXKVCCheckmarkCell *cell, BOOL value){
+        [object setValue:[NSNumber numberWithBool:value] forKey:key];
         
         YXBlock block = cell.updateAction;
-        if (block) block();
+        if (block)
+            block();
     };
 
 	return [cell autorelease];

@@ -13,12 +13,13 @@
 @interface YXCheckmarkCell : NSObject <YXModelCell>
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
-@property (nonatomic, copy) YXValueSenderBlock handler;
+@property (nonatomic, copy) YXBoolGetterBlock initialValueGetter;
+@property (nonatomic, copy) YXBoolSenderBlock handler;
 
 + (id)cellWithTitle:(NSString *)title group:(YXCheckmarkCellGroup *)group;
 + (id)cellWithTitle:(NSString *)title group:(YXCheckmarkCellGroup *)group selected:(BOOL)selected;
-+ (id)cellWithTitle:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title initialValue:(YXBoolGetterBlock)getter handler:(YXBoolSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title value:(BOOL)initialValue handler:(YXBoolSenderBlock)handler;
 
 - (void)update;
 

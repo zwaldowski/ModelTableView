@@ -16,7 +16,7 @@
 - (BOOL)_allowsToChangeTo:(BOOL)newValue;
 
 @property (nonatomic, retain) UITableViewCell *lastCreatedTableCell;
-@property (nonatomic, copy) YXValueValidationBlock willChangeHandler;
+@property (nonatomic, copy) YXValidationBlock willChangeHandler;
 
 @end
 
@@ -40,16 +40,22 @@
 	return [cell autorelease];
 }
 
-+ (id)cellWithTitle:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler {
-	NSAssert(handler, @"");
++ (id)cellWithTitle:(NSString *)title initialValue:(YXBoolGetterBlock)getter handler:(YXBoolSenderBlock)handler {
+    NSAssert(handler, @"");
     
     YXCheckmarkCell *cell = [self new];
     
     cell.title = title;
-    cell.initialValueGetter = initialValueGetter;
+    cell.initialValueGetter = getter;
     cell.handler = handler;
     
     return [cell autorelease];
+}
+
++ (id)cellWithTitle:(NSString *)title value:(BOOL)initialValue handler:(YXBoolSenderBlock)handler {
+    return [self cellWithTitle:title initialValue:^BOOL(id sender) {
+        return initialValue;
+    } handler:handler];
 }
 
 - (void)dealloc {
@@ -91,9 +97,14 @@
 	if ([self _allowsToChangeTo:newValue]) {	
 		cell.accessoryType = [self _accessoryTypeForBool:newValue];
         
-        YXValueSenderBlock block = self.handler;
-        if (block) block(self, [NSNumber numberWithBool:newValue]);
+        YXBoolSenderBlock block = self.handler;
+        if (block)
+            block(self, newValue);
 	}
+}
+
+- (NSString *)reuseIdentifier {
+    return @"YXCheckmarkCell";
 }
 
 #pragma mark -
@@ -103,14 +114,12 @@
 	if (!self.lastCreatedTableCell)
 		return;
     
-    NSNumber *boolNumber = nil;
-    YXValueGetterBlock block = self.initialValueGetter;
+    BOOL selected = NO;
+    YXBoolGetterBlock block = self.initialValueGetter;
     if (block)
-        boolNumber = block(self);
-    else
-        boolNumber = [NSNumber numberWithBool:NO];
+        selected = block(self);
     
-	self.lastCreatedTableCell.accessoryType = [self _accessoryTypeForBool:[boolNumber boolValue]];
+	self.lastCreatedTableCell.accessoryType = [self _accessoryTypeForBool:selected];
 }
 
 #pragma mark -
@@ -126,11 +135,11 @@
 }
 
 - (BOOL)_allowsToChangeTo:(BOOL)newValue {
-    YXValueValidationBlock block = self.willChangeHandler;
+    YXValidationBlock block = self.willChangeHandler;
     if (!block)
         return YES;
     
-    return block(self, [NSNumber numberWithBool:newValue]);
+    return block(self, newValue);
 }
 
 @end

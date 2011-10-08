@@ -9,7 +9,7 @@
 #import "YXCheckmarkCellGroup.h"
 
 @interface YXCheckmarkCell()
-@property (nonatomic, copy) YXValueValidationBlock willChangeHandler;
+@property (nonatomic, copy) YXValidationBlock willChangeHandler;
 @end
 
 @interface YXCheckmarkCellGroup ()
@@ -53,17 +53,16 @@
 	if (selected)
 		self.selectedCell = cell;
     
-    cell.initialValueGetter = ^NSNumber *(YXCheckmarkCell *cell){
-        BOOL boolValue = (cell == self.selectedCell);
-        return [NSNumber numberWithBool:boolValue];
+    cell.initialValueGetter = ^BOOL(YXCheckmarkCell *cell){
+        return (cell == self.selectedCell);
     };
     
-    cell.handler = ^(YXCheckmarkCell *cell, NSNumber *value){
-        if ([value boolValue])
+    cell.handler = ^(YXCheckmarkCell *cell, BOOL value){
+        if (value)
             self.selectedCell = cell;
     };
     
-    cell.willChangeHandler = ^BOOL(YXCheckmarkCell *cell, NSNumber *value){
+    cell.willChangeHandler = ^BOOL(YXCheckmarkCell *cell, BOOL value){
         return (self.selectedCell != cell);
     };
 }

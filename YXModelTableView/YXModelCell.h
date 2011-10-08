@@ -9,25 +9,23 @@
 @protocol YXModelCell <NSObject>
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell;
-
-@optional
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, readonly) NSString *reuseIdentifier;
+
+@optional
 @property (nonatomic, readonly) CGFloat height;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-typedef void(^YXBlock)(void);
-typedef void(^YXSenderBlock)(id <YXModelCell> sender);
-typedef void(^YXValueSenderBlock)(id <YXModelCell> sender, NSNumber *value);
-typedef void(^YXNumberSenderBlock)(id <YXModelCell> sender, NSUInteger value);
-typedef void(^YXBoolSenderBlock)(id <YXModelCell> sender, BOOL value);
-typedef BOOL(^YXValueValidationBlock)(id <YXModelCell> sender, NSNumber *value);
+typedef void      (^YXBlock)(void);
+typedef void      (^YXSenderBlock)(id <YXModelCell> sender);
+typedef void      (^YXNumberSenderBlock)(id <YXModelCell> sender, NSUInteger value);
+typedef void      (^YXBoolSenderBlock)(id <YXModelCell> sender, BOOL value);
+typedef BOOL      (^YXValidationBlock)(id <YXModelCell> sender, BOOL value);
 typedef NSUInteger(^YXNumberGetterBlock)(id sender);
 typedef BOOL      (^YXBoolGetterBlock)(id sender);
-typedef NSNumber *(^YXValueGetterBlock)(id sender);
 
 @protocol YXModelCellWithEditing <NSObject, YXModelCell>
 

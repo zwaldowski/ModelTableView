@@ -12,6 +12,7 @@
 
 @synthesize customReuseIdentifier, buildingHandler, selectionHandler;
 @synthesize editingAccessoryType, editHandler;
+@synthesize image;
 
 #pragma mark -
 #pragma mark Object lifecycle
