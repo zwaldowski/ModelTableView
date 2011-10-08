@@ -21,11 +21,11 @@
     cell.title = title;
 	cell.object = object;
 	cell.key = key;
-    cell.initialValueGetter = ^NSNumber *(YXKVCSwitchCell *cell) {
-        return [object valueForKey:key];
+    cell.initialValueGetter = ^BOOL(YXKVCSwitchCell *cell) {
+        return [[object valueForKey:key] boolValue];
     };
-    cell.handler = ^(YXKVCSwitchCell *cell, NSNumber *value){
-        [object setValue:value forKey:key];
+    cell.handler = ^(YXKVCSwitchCell *cell, BOOL value){
+        [object setValue:[NSNumber numberWithBool:value] forKey:key];
     };
 
 	return [cell autorelease];

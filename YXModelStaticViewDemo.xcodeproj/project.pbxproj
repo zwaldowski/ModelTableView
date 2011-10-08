@@ -157,6 +157,7 @@
 		6CA296261361F6BC00EF6471 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Dizzy Technology";
 			};
 			buildConfigurationList = 6CA296291361F6BC00EF6471 /* Build configuration list for PBXProject "YXModelStaticViewDemo" */;
@@ -294,6 +295,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YXModelStaticViewDemo/YXModelStaticViewDemo-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/YXModelTableView";
 				INFOPLIST_FILE = "YXModelStaticViewDemo/YXModelStaticViewDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -308,6 +310,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YXModelStaticViewDemo/YXModelStaticViewDemo-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/YXModelTableView";
 				INFOPLIST_FILE = "YXModelStaticViewDemo/YXModelStaticViewDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";

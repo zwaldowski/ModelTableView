@@ -16,15 +16,21 @@
 #pragma mark -
 #pragma mark Object lifecycle
 
-+ (id)cellWithTitle:(NSString *)title initialValueGetter:(YXValueGetterBlock)initialValueGetter handler:(YXValueSenderBlock)handler {
-	YXSwitchCell *cell = [YXSwitchCell new];
++ (id)cellWithTitle:(NSString *)title initialValue:(YXBoolGetterBlock)getter handler:(YXBoolSenderBlock)handler {
+    YXSwitchCell *cell = [YXSwitchCell new];
     
 	cell.title = title;
-	cell.initialValueGetter = initialValueGetter;
+	cell.initialValueGetter = getter;
 	cell.handler = handler;
     cell.togglesOnSelect = YES;
     
 	return [cell autorelease];
+}
+
++ (id)cellWithTitle:(NSString *)title value:(BOOL)initialValue handler:(YXBoolSenderBlock)handler {
+    return [self cellWithTitle:title initialValue:^BOOL(id sender) {
+        return initialValue;
+    } handler:handler];
 }
 
 - (void)dealloc {
@@ -58,9 +64,9 @@
     
     cell.imageView.image = self.image;
     
-    YXValueGetterBlock block = self.initialValueGetter;
+    YXBoolGetterBlock block = self.initialValueGetter;
     if (block)
-        switchControl.on = [block(self) boolValue];
+        switchControl.on = block(self);
     else
         switchControl.on = NO;
     
@@ -87,9 +93,9 @@
 #pragma mark Private
 
 - (void)_switchControlChanged:(UISwitch *)switchControl {
-    YXValueSenderBlock block = self.handler;
+    YXBoolSenderBlock block = self.handler;
     if (block)
-        block(self, [NSNumber numberWithBool:switchControl.on]);
+        block(self, switchControl.on);
 }
 
 

@@ -10,10 +10,11 @@
 
 @interface YXSegmentedControlCell : NSObject <YXModelCell>
 
-@property (nonatomic, copy) YXValueSenderBlock handler;
-@property (nonatomic, copy) YXValueGetterBlock initialValueGetter;
+@property (nonatomic, copy) YXNumberSenderBlock handler;
+@property (nonatomic, copy) YXNumberGetterBlock initialValueGetter;
 @property (nonatomic, copy) NSArray *segmentedControlItems;
 
-+ (id)cellWithSegmentedControlItems:(NSArray *)items handler:(YXValueSenderBlock)handler initialValueGetter:(YXValueGetterBlock)initialValueGetter;
++ (id)cellWithItems:(NSArray *)items initialValue:(YXNumberGetterBlock)getter handler:(YXNumberSenderBlock)handler;
++ (id)cellWithItems:(NSArray *)items value:(NSUInteger)initialValue handler:(YXNumberSenderBlock)handler;
 
 @end

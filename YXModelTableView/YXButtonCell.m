@@ -58,4 +58,8 @@
 	if (block) block();
 }
 
+- (NSString *)reuseIdentifier {
+    return @"YXButtonCell";
+}
+
 @end

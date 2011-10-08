@@ -22,7 +22,11 @@
 typedef void(^YXBlock)(void);
 typedef void(^YXSenderBlock)(id <YXModelCell> sender);
 typedef void(^YXValueSenderBlock)(id <YXModelCell> sender, NSNumber *value);
+typedef void(^YXNumberSenderBlock)(id <YXModelCell> sender, NSUInteger value);
+typedef void(^YXBoolSenderBlock)(id <YXModelCell> sender, BOOL value);
 typedef BOOL(^YXValueValidationBlock)(id <YXModelCell> sender, NSNumber *value);
+typedef NSUInteger(^YXNumberGetterBlock)(id sender);
+typedef BOOL      (^YXBoolGetterBlock)(id sender);
 typedef NSNumber *(^YXValueGetterBlock)(id sender);
 
 @protocol YXModelCellWithEditing <NSObject, YXModelCell>

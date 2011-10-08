@@ -51,8 +51,8 @@
 
 #pragma mark UIViewController
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
+- (void)loadView {
+	[super loadView];
     
     UITableView *newTable = [self createTableView];
     newTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

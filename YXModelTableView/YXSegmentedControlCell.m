@@ -13,17 +13,22 @@
 
 @synthesize image, segmentedControlItems, handler, initialValueGetter;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - Object lifecycle
 
-+ (id)cellWithSegmentedControlItems:(NSArray *)items handler:(YXValueSenderBlock)handler initialValueGetter:(YXValueGetterBlock)initialValueGetter {
-	YXSegmentedControlCell *cell = [YXSegmentedControlCell new];
-
++ (id)cellWithItems:(NSArray *)items initialValue:(YXNumberGetterBlock)getter handler:(YXNumberSenderBlock)handler {
+    YXSegmentedControlCell *cell = [YXSegmentedControlCell new];
+    
 	cell.segmentedControlItems = items;
 	cell.handler = handler;
-	cell.initialValueGetter = initialValueGetter;
-
+	cell.initialValueGetter = getter;
+    
 	return [cell autorelease];
+}
+
++ (id)cellWithItems:(NSArray *)items value:(NSUInteger)initialValue handler:(YXNumberSenderBlock)handler {
+    return [self cellWithItems:items initialValue:^NSUInteger(id sender) {
+        return initialValue;
+    } handler:handler];
 }
 
 - (void)dealloc {
@@ -35,8 +40,7 @@
     [super dealloc];
 }
 
-#pragma mark -
-#pragma mark YXModelCell
+#pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	YXSegmentedControlViewCell *cell = (YXSegmentedControlViewCell *)reusableCell;
@@ -52,7 +56,7 @@
     [cell.segmentedControl addTarget:self action:@selector(_segmentedControlDidChangeValue:) forControlEvents:UIControlEventValueChanged];
     
     if (self.initialValueGetter)
-        cell.segmentedControl.selectedSegmentIndex = [self.initialValueGetter(self) integerValue];
+        cell.segmentedControl.selectedSegmentIndex = self.initialValueGetter(self);
     
 	return cell;
 }
@@ -61,13 +65,12 @@
     return @"YXSegmentedControlCell";
 }
 
-#pragma mark -
-#pragma mark Private
+#pragma mark - Private
 
 - (void)_segmentedControlDidChangeValue:(UISegmentedControl *)segmentedControl {
-    YXValueSenderBlock block = self.handler;
+    YXNumberSenderBlock block = self.handler;
     if (block)
-        block(self, [NSNumber numberWithInteger:segmentedControl.selectedSegmentIndex]);
+        block(self, segmentedControl.selectedSegmentIndex);
 }
 
 @end
