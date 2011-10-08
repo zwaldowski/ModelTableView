@@ -13,35 +13,22 @@
 @synthesize title, object, key;
 @synthesize image, editingAccessoryType, editHandler;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - NSObject
 
 + (id)cellWithTitle:(NSString*)title object:(id)object key:(NSString*)key {
 	YXKeyValueCell *cell = [YXKeyValueCell new];
-
 	cell.title = title;
 	cell.object = object;
 	cell.key = key;
-	
-	return [cell autorelease];
+	return cell;
 }
 
-- (void)dealloc {
-    self.object = nil;
-    self.title = nil;
-    self.image = nil;
-    self.key = nil;
-	
-	[super dealloc];
-}
-
-#pragma mark -
-#pragma mark YXModelCell
+#pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {    
 	UITableViewCell *cell = reusableCell;
 	if (!cell)
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.reuseIdentifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:self.reuseIdentifier];
     
 	cell.textLabel.text = self.title;
 	cell.detailTextLabel.text = [[self.object valueForKey:self.key] description];

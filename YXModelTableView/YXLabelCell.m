@@ -13,8 +13,7 @@
 @synthesize text, font, color, alignment;
 @synthesize image, editingAccessoryType, editHandler;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - NSObject
 
 + (id)cellWithText:(NSString *)text {
 	return [self cellWithText:text font:nil color:nil alignment:UITextAlignmentLeft];
@@ -28,27 +27,16 @@
     cell.color = (color) ? color : [UIColor blackColor];
     cell.alignment = (align) ? align : UITextAlignmentLeft;
     
-	return [cell autorelease];
+	return cell;
 }
 
-- (void)dealloc {
-    self.editHandler = NULL;
-    self.color = nil;
-    self.image = nil;
-    self.text = nil;
-    self.font = nil;
-    
-    [super dealloc];
-}
-
-#pragma mark -
-#pragma mark YXModelCell
+#pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	UITableViewCell * cell = reusableCell;
     
 	if (!cell)
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier];
     
 	cell.textLabel.text = self.text;
     cell.textLabel.font = self.font;
@@ -64,6 +52,10 @@
 
 - (CGFloat)height {
     return [self.text sizeWithFont:self.font].height + 10.0f;
+}
+
+- (NSString *)reuseIdentifier {
+    return @"YXLabelCell";
 }
 
 @end
