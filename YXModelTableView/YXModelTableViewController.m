@@ -9,9 +9,9 @@
 #import "YXModelTableViewController.h"
 
 @interface YXModelTableViewController()
-@property (nonatomic, readwrite, retain) UITableView *tableView;
-@property (nonatomic, readwrite, retain) NSIndexPath *lastSelectedIndexPath;
-@property (nonatomic, assign) UITableViewStyle tableViewStyle;
+@property (nonatomic, readwrite, strong) UITableView *tableView;
+@property (nonatomic, readwrite, strong) NSIndexPath *lastSelectedIndexPath;
+@property (nonatomic) UITableViewStyle tableViewStyle;
 
 @end
 
@@ -39,14 +39,6 @@
         self.tableViewStyle = style;
     }
     return self;
-}
-
-- (void)dealloc {
-    self.tableView = nil;
-    self.lastSelectedIndexPath = nil;
-    self.sections = nil;
-    self.accessoryGroup = nil;
-    [super dealloc];
 }
 
 #pragma mark UIViewController
@@ -99,7 +91,7 @@
 #pragma mark Table view
 
 - (UITableView *)createTableView {
-    return [[[UITableView alloc] initWithFrame:CGRectZero style:self.tableViewStyle] autorelease];
+    return [[UITableView alloc] initWithFrame:CGRectZero style:self.tableViewStyle];
 }
 
 - (void)setTableView:(UITableView *)aTableView {
@@ -107,8 +99,7 @@
         return;
     tableView.delegate = nil;
     tableView.dataSource = nil;
-    [tableView release];
-    tableView = [aTableView retain];
+    tableView = aTableView;
     tableView.delegate = self;
     tableView.dataSource = self;    
 }
@@ -253,25 +244,32 @@
     
     // Get animation info from userInfo
     NSTimeInterval animationDuration;
-    UIViewAnimationCurve oldCurve;
-    UIViewAnimationOptions newCurve;
+    UIViewAnimationCurve animationCurve;
     CGRect keyboardEndFrame;
     
-    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&oldCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
     
-    if (oldCurve == UIViewAnimationCurveEaseInOut)
-        newCurve = UIViewAnimationOptionCurveEaseInOut;
-    else if (oldCurve == UIViewAnimationCurveEaseIn)
-        newCurve = UIViewAnimationOptionCurveEaseIn;
-    else if (oldCurve == UIViewAnimationCurveEaseOut)
-        newCurve = UIViewAnimationOptionCurveEaseOut;
-    else
-        newCurve = UIViewAnimationOptionCurveLinear;
-        
+    UIViewAnimationOptions option = UIViewAnimationOptionBeginFromCurrentState;
+    
+    switch (animationCurve) {
+        case UIViewAnimationCurveEaseInOut:
+            option |= UIViewAnimationOptionCurveEaseInOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            option |= UIViewAnimationOptionCurveEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            option |= UIViewAnimationOptionCurveEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            option |= UIViewAnimationOptionCurveLinear;
+            break;
+    }
+    
     // Animate up or down
-    [UIView animateWithDuration:animationDuration delay:0.0 options:newCurve animations:^(void) {
+    [UIView animateWithDuration:animationDuration delay:0.0 options:option animations:^{
         CGRect newFrame = self.tableView.frame;
         CGRect keyboardFrame = [self.view convertRect:keyboardEndFrame toView:nil];
         

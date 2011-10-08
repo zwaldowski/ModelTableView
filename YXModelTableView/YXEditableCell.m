@@ -10,13 +10,15 @@
 #import "YXEditableViewCell.h"
 
 @interface YXEditableCell ()
-@property (nonatomic, assign) UITextField *textField;
+@property (nonatomic, strong) UITextField *textField;
 @end
 
 @implementation YXEditableCell
 
 @synthesize placeholder, title, value, handler, textField;
 @synthesize image, editingAccessoryType, editHandler;
+
+#pragma mark - NSObject
 
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
     return [self cellWithTitle:title placeholder:placeholder value:nil handler:NULL];
@@ -38,29 +40,16 @@
     cell.value = value;
     cell.handler = handler;
     
-    return [cell autorelease];
+    return cell;
 }
 
-- (void)dealloc {
-    self.editHandler = NULL;
-	self.placeholder = nil;
-    self.textField = nil;
-    self.handler = nil;
-    self.value = nil;
-    self.title = nil;
-    self.image = nil;
-    
-	[super dealloc];
-}
-
-#pragma mark -
-#pragma mark YXModelCell
+#pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	YXEditableViewCell * cell = (YXEditableViewCell *)reusableCell;
 
 	if (!cell)
-		cell = [[[YXEditableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
+		cell = [[YXEditableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier];
     
     [cell.textField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEditingEvents];
 
@@ -91,8 +80,7 @@
     return @"YXEditableCell";
 }
 
-#pragma mark -
-#pragma mark Delegates
+#pragma mark - Delegates
 
 - (void)didEndEditing:(UITextField *)aTextField {
     YXSenderBlock block = self.handler;
@@ -104,8 +92,7 @@
     if (block) block(self);
 }
 
-#pragma mark -
-#pragma mark Properties
+#pragma mark - Properties
 
 - (void)setValue:(NSString *)aValue {
     textField.text = aValue;

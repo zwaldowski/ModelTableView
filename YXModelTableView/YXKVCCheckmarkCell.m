@@ -12,9 +12,6 @@
 
 @synthesize key, object, updateAction;
 
-#pragma mark -
-#pragma mark Object lifecycle
-
 + (id)cellWithTitle:(NSString *)title object:(id)object key:(NSString *)key {
 	YXKVCCheckmarkCell * cell = [YXKVCCheckmarkCell new];
     
@@ -32,15 +29,7 @@
             block();
     };
 
-	return [cell autorelease];
-}
-
-- (void)dealloc {
-	self.key = nil;
-	self.object = nil;
-    self.updateAction = NULL;
-	
-	[super dealloc];
+	return cell;
 }
 
 @end

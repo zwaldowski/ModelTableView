@@ -8,7 +8,7 @@
 
 @interface YXSegmentedControlViewCell : UITableViewCell
 
-@property (nonatomic, retain, readonly) UISegmentedControl *segmentedControl;
+@property (nonatomic, strong, readonly) UISegmentedControl *segmentedControl;
 
 - (id)initWithSegmentedControlItems:(NSArray *)items reuseIdentifier:(NSString *)reuseIdentifier;
 - (void)setItems:(NSArray *)items;

@@ -12,8 +12,7 @@
 
 @synthesize image, title, description, handler;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - NSObject
 
 + (id)cellWithTitle:(NSString *)title {
     return [self cellWithTitle:title description:nil handler:NULL];
@@ -34,27 +33,17 @@
 	cell.description = description;
 	cell.handler = handler;
     
-	return [cell autorelease];
+	return cell;
 }
 
-- (void)dealloc {
-    self.description = nil;
-    self.handler = nil;
-    self.title = nil;
-    self.image = nil;
-    
-	[super dealloc];
-}
-
-#pragma mark -
-#pragma mark YXModelCell
+#pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	UITableViewCellStyle style = (self.description) ? UITableViewCellStyleValue1 : UITableViewCellStyleDefault;
 
 	UITableViewCell *cell = reusableCell;
 	if (!cell)
-		cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:self.reuseIdentifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:style reuseIdentifier:self.reuseIdentifier];
 
 	cell.textLabel.text = self.title;
     cell.textLabel.font = [UIFont boldSystemFontOfSize:17];

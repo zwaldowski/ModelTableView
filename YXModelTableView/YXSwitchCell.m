@@ -13,8 +13,7 @@
 @synthesize title, initialValueGetter, handler, togglesOnSelect;
 @synthesize image, editingAccessoryType, editHandler;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - NSObject
 
 + (id)cellWithTitle:(NSString *)title initialValue:(YXBoolGetterBlock)getter handler:(YXBoolSenderBlock)handler {
     YXSwitchCell *cell = [YXSwitchCell new];
@@ -24,7 +23,7 @@
 	cell.handler = handler;
     cell.togglesOnSelect = YES;
     
-	return [cell autorelease];
+	return cell;
 }
 
 + (id)cellWithTitle:(NSString *)title value:(BOOL)initialValue handler:(YXBoolSenderBlock)handler {
@@ -33,27 +32,13 @@
     } handler:handler];
 }
 
-- (void)dealloc {
-    self.initialValueGetter = NULL;
-    self.editHandler = NULL;
-    self.handler = NULL;
-    self.title = nil;
-    self.image = nil;
-    
-	[super dealloc];
-}
-
 #pragma mark -
-#pragma mark Public interface
-
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	UITableViewCell *cell = reusableCell;
 
 	if (!cell) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier] autorelease];
-		UISwitch *view = [UISwitch new];
-		cell.accessoryView = view;
-		[view release];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier];
+		cell.accessoryView = [UISwitch new];
 	}
     
     UISwitch *switchControl = (UISwitch *)[cell accessoryView];
@@ -89,8 +74,7 @@
     return @"YXSwitchCell";
 }
 
-#pragma mark -
-#pragma mark Private
+#pragma mark - Private
 
 - (void)_switchControlChanged:(UISwitch *)switchControl {
     YXBoolSenderBlock block = self.handler;

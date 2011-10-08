@@ -13,10 +13,10 @@
 @property (nonatomic, copy) NSString *header;
 @property (nonatomic, copy) NSString *footer;
 
-@property (nonatomic, retain) UIView *footerView;
-@property (nonatomic, retain) UIView *headerView;
+@property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) UIView *headerView;
 
-@property (nonatomic, retain) NSMutableArray *cells;
+@property (nonatomic, strong) NSMutableArray *cells;
 
 @property (nonatomic, readonly) id <YXModelCell> lastCell;
 @property (nonatomic, readonly, getter=cellCount) NSInteger count;

@@ -14,8 +14,8 @@
 
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
 
-@property (nonatomic, retain) IBOutlet YXModelStaticViewDemoViewController *viewController;
+@property (nonatomic, strong) IBOutlet YXModelStaticViewDemoViewController *viewController;
 
 @end

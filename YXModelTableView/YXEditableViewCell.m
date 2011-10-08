@@ -9,7 +9,7 @@
 #import "YXEditableViewCell.h"
 
 @interface YXEditableViewCell()
-@property (nonatomic, retain, readwrite) UITextField *textField;
+@property (nonatomic, strong, readwrite) UITextField *textField;
 @end
 
 @implementation YXEditableViewCell
@@ -28,8 +28,6 @@ static const CGFloat kTextFieldMargin = 10.0f;
 		field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		[self addSubview:field];
         self.textField = field;
-        [field release];
-        
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -46,19 +44,18 @@ static const CGFloat kTextFieldMargin = 10.0f;
         
     CGFloat left = self.contentView.bounds.origin.x + kTextFieldMargin;
     
-    if (self.imageView.image) {
+    if (self.imageView.image)
         left += self.imageView.image.size.width + 5;
-    }
     
-    if (self.textLabel.text) {
+    if (!self.textLabel.text)
+        left += 30;
+    else {
         left += 100 + kTextFieldMargin + kTextFieldMargin + 5;
         CGRect myRect = self.contentView.bounds;
         myRect.size.width = 100;
         myRect.size.height -= 1;
         myRect.origin.x = kTextFieldMargin;
         self.textLabel.frame = myRect;
-    } else {
-        left += 30;
     }
     
     CGRect inset = CGRectMake(left, 0, self.contentView.bounds.size.width - left * 1.20, self.contentView.bounds.size.height);
@@ -72,11 +69,5 @@ static const CGFloat kTextFieldMargin = 10.0f;
 - (NSString *)placeholder {
 	return textField.placeholder;
 }
-
-- (void)dealloc {
-    self.textField = nil;
-    [super dealloc];
-}
-
 
 @end

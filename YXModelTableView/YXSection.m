@@ -12,8 +12,7 @@
 
 @synthesize header, footer, headerView, footerView, cells;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - NSObject
 
 + (id)section {
 	return [self sectionWithHeader:nil footer:nil];
@@ -24,12 +23,10 @@
 }
 
 + (id)sectionWithHeader:(NSString *)header footer:(NSString *)footer {
-    YXSection *instance = [self new];
-    
-    instance.header = header;
-    instance.footer = footer;
-    
-    return [instance autorelease];
+    YXSection *section = [self new];
+    section.header = header;
+    section.footer = footer;
+    return section;
 }
 
 - (id)init {
@@ -39,18 +36,7 @@
 	return self;
 }
 
-- (void)dealloc {
-    self.header = nil;
-    self.footer = nil;
-    self.headerView = nil;
-    self.footerView = nil;
-    self.cells = nil;
-    
-	[super dealloc];
-}
-
 #pragma mark -
-#pragma mark Public interface
 
 - (void)addCell:(id <YXModelCell>)cell {
 	[self.cells addObject:cell];
@@ -80,10 +66,7 @@
     return [self.cells lastObject];
 }
 
-#pragma mark -
-#pragma NSFastEnumeration
-
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id [])buffer count:(NSUInteger)len {
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(__unsafe_unretained id [])buffer count:(NSUInteger)len {
     return [self.cells countByEnumeratingWithState:state objects:buffer count:len];
 }
 

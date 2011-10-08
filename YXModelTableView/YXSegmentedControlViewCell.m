@@ -9,7 +9,7 @@
 #import "YXSegmentedControlViewCell.h"
 
 @interface YXSegmentedControlViewCell()
-@property (nonatomic, retain, readwrite) UISegmentedControl *segmentedControl;
+@property (nonatomic, strong, readwrite) UISegmentedControl *segmentedControl;
 @end
 
 @implementation YXSegmentedControlViewCell
@@ -23,7 +23,7 @@
 - (id)initWithSegmentedControlItems:(NSArray *)items reuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 	if (self) {
-        self.segmentedControl = [[[UISegmentedControl alloc] initWithItems:items] autorelease];
+        self.segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 		[self.contentView addSubview:self.segmentedControl];
     }
@@ -72,15 +72,5 @@
 	[super layoutSubviews];
 	self.segmentedControl.frame = CGRectInset(self.contentView.bounds, -1.0f, -2.0f);
 }
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)dealloc {
-    self.segmentedControl = nil;
-    [super dealloc];
-}
-
 
 @end

@@ -14,8 +14,7 @@
 @synthesize editingAccessoryType, editHandler;
 @synthesize image;
 
-#pragma mark -
-#pragma mark Object lifecycle
+#pragma mark - NSObject
 
 + (id)cellWithReuseIdentifier:(NSString *)reuseIdentifier buildingHandler:(YXCustomizableBuildingBlock)buildingHandler selectionHandler:(YXSenderBlock)selectionHandler {
     YXCustomizableCell *cell = [YXCustomizableCell new];
@@ -24,17 +23,10 @@
     cell.buildingHandler = buildingHandler;
     cell.selectionHandler = selectionHandler;
     
-    return [cell autorelease];
+    return cell;
 }
 
-- (void)dealloc {
-    self.buildingHandler = NULL;
-    self.selectionHandler = NULL;
-    self.editHandler = NULL;
-}
-
-#pragma mark -
-#pragma mark YXModelCell
+#pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
     YXCustomizableBuildingBlock block = self.buildingHandler;

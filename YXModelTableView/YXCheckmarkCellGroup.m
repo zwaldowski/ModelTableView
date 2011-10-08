@@ -13,7 +13,7 @@
 @end
 
 @interface YXCheckmarkCellGroup ()
-@property (nonatomic, retain) NSMutableArray *cells;
+@property (nonatomic, strong) NSMutableArray *cells;
 @property (nonatomic, copy, readwrite) YXCheckmarkBlock handler;
 @end
 
@@ -21,25 +21,19 @@
 
 @synthesize handler, selectedCell, cells;
 
+#pragma mark - NSObject
+
 + (id)group {
-    return [[self new] autorelease];
+    return [self new];
 }
 
 + (id)groupWithHandler:(YXCheckmarkBlock)aHandler {
     YXCheckmarkCellGroup *instance = [self new];
     instance.handler = aHandler;
-    return [instance autorelease];
+    return instance;
 }
 
-- (void)dealloc {
-    self.cells = nil;
-    self.handler = nil;
-	self.selectedCell = nil;
-	[super dealloc];
-}
-
-#pragma mark -
-#pragma mark Public interface
+#pragma mark - YXCheckmarkCellGroup
 
 - (void)addCell:(YXCheckmarkCell *)cell {
     [self addCell:cell setSelected:NO];
@@ -95,8 +89,7 @@
     return [self indexOfCell:self.selectedCell];
 }
 
-#pragma mark -
-#pragma mark Private
+#pragma mark - Private
 
 - (void)setSelectedCell:(YXCheckmarkCell *)newCell {
     YXCheckmarkCell *previousCell = self.selectedCell;

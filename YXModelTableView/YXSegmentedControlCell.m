@@ -22,7 +22,7 @@
 	cell.handler = handler;
 	cell.initialValueGetter = getter;
     
-	return [cell autorelease];
+	return cell;
 }
 
 + (id)cellWithItems:(NSArray *)items value:(NSUInteger)initialValue handler:(YXNumberSenderBlock)handler {
@@ -31,32 +31,24 @@
     } handler:handler];
 }
 
-- (void)dealloc {
-    self.segmentedControlItems = nil;
-    self.initialValueGetter = NULL;
-    self.handler = NULL;
-    self.image = nil;
-    
-    [super dealloc];
-}
-
 #pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
 	YXSegmentedControlViewCell *cell = (YXSegmentedControlViewCell *)reusableCell;
 
 	if (!cell)
-        cell = [[[YXSegmentedControlViewCell alloc] initWithSegmentedControlItems:self.segmentedControlItems reuseIdentifier:self.reuseIdentifier] autorelease];
+        cell = [[YXSegmentedControlViewCell alloc] initWithSegmentedControlItems:segmentedControlItems reuseIdentifier:self.reuseIdentifier];
     else
-		[cell setItems:self.segmentedControlItems];
+		[cell setItems:segmentedControlItems];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [cell.segmentedControl addTarget:self action:@selector(_segmentedControlDidChangeValue:) forControlEvents:UIControlEventValueChanged];
     
-    if (self.initialValueGetter)
-        cell.segmentedControl.selectedSegmentIndex = self.initialValueGetter(self);
+    YXNumberGetterBlock block = initialValueGetter;
+    if (block)
+        cell.segmentedControl.selectedSegmentIndex = block(self);
     
 	return cell;
 }

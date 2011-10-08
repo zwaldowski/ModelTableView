@@ -12,9 +12,6 @@
 
 @synthesize object, key;
 
-#pragma mark -
-#pragma mark Object lifecycle
-
 + (id)cellWithTitle:(NSString *)title object:(id)object key:(NSString *)key {
 	YXKVCSwitchCell *cell = [YXKVCSwitchCell new];
     
@@ -28,14 +25,7 @@
         [object setValue:[NSNumber numberWithBool:value] forKey:key];
     };
 
-	return [cell autorelease];
-}
-
-- (void)dealloc {
-    self.object = nil;
-    self.key = nil;
-    
-	[super dealloc];
+	return cell;
 }
 
 @end

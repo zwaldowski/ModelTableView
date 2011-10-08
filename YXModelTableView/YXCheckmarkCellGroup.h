@@ -12,8 +12,8 @@ typedef void(^YXCheckmarkBlock)(YXCheckmarkCell *selected, NSUInteger index);
 
 @interface YXCheckmarkCellGroup : NSObject
 
-@property (nonatomic, assign) YXCheckmarkCell *selectedCell;
-@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, strong) YXCheckmarkCell *selectedCell;
+@property (nonatomic) NSUInteger selectedIndex;
 @property (nonatomic, copy, readonly) YXCheckmarkBlock handler;
 
 + (id)group;

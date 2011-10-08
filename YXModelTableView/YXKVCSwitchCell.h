@@ -10,7 +10,7 @@
 
 @interface YXKVCSwitchCell : YXSwitchCell
 
-@property (nonatomic, retain) id object;
+@property (nonatomic, strong) id object;
 @property (nonatomic, copy) NSString *key;
 
 + (id)cellWithTitle:(NSString *)title object:(id)object key:(NSString *)key;

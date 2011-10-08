@@ -9,7 +9,7 @@
 @protocol YXModelCell <NSObject>
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell;
-@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, readonly) NSString *reuseIdentifier;
 
 @optional

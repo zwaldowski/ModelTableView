@@ -9,6 +9,6 @@
 @interface YXEditableViewCell : UITableViewCell
 
 @property (nonatomic, copy) NSString *placeholder;
-@property (nonatomic, retain, readonly) UITextField *textField;
+@property (nonatomic, strong, readonly) UITextField *textField;
 
 @end

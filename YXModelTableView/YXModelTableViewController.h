@@ -11,9 +11,9 @@
 @interface YXModelTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, copy) NSArray *sections;
-@property (nonatomic, retain) NSArray *accessoryGroup;
-@property (nonatomic, retain, readonly) UITableView *tableView;
-@property (nonatomic, retain, readonly) NSIndexPath *lastSelectedIndexPath;
+@property (nonatomic, strong) NSArray *accessoryGroup;
+@property (nonatomic, strong, readonly) UITableView *tableView;
+@property (nonatomic, strong, readonly) NSIndexPath *lastSelectedIndexPath;
 
 - (id)initWithStyle:(UITableViewStyle)style;
 - (UITableView *)createTableView;
