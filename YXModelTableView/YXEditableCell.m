@@ -21,38 +21,45 @@
 
 #pragma mark - NSObject
 
-+ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
-    return [self cellWithTitle:title placeholder:placeholder value:nil handler:NULL];
-}
-
-+ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value {
-    return [self cellWithTitle:title placeholder:placeholder value:value handler:NULL];
-}
-
-+ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler {
-    return [self cellWithTitle:title placeholder:placeholder value:nil handler:handler];
-}
-
-+ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler {
-    YXEditableCell * cell = [YXEditableCell new];
-    
-    cell.title = title;
-    cell.placeholder = placeholder;
-    cell.value = value;
-    cell.handler = handler;
-    
-    return cell;
-}
-
 + (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
     YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder];
     cell.secure = YES;
     return cell;
 }
 
-+ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler {
-    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder handler:handler];
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:handler];
     cell.secure = YES;
+    return cell;
+}
+
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder onEdit:editHandler];
+    cell.secure = YES;
+    return cell;
+}
+
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
+    return [self cellWithTitle:title placeholder:placeholder value:nil onEdit:NULL onFinish:NULL];
+}
+
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler {
+    return [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:editHandler];
+}
+
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value {
+    return [self cellWithTitle:title placeholder:placeholder value:value onEdit:NULL onFinish:NULL];
+}
+
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler {
+    YXEditableCell * cell = [YXEditableCell new];
+    
+    cell.title = title;
+    cell.placeholder = placeholder;
+    cell.value = value;
+    cell.editHandler = editHandler;
+    cell.handler = handler;
+    
     return cell;
 }
 
@@ -114,6 +121,10 @@
 
 - (NSString *)value {
     return textField.text;
+}
+
+- (void)resignFirstResponder {
+    [textField resignFirstResponder];
 }
 
 @end
