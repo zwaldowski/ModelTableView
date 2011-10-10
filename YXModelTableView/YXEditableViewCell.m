@@ -58,8 +58,7 @@ static const CGFloat kTextFieldMargin = 10.0f;
         self.textLabel.frame = myRect;
     }
     
-    CGRect inset = CGRectMake(left, 0, self.contentView.bounds.size.width - left * 1.20, self.contentView.bounds.size.height);
-    textField.frame = inset;
+    textField.frame = CGRectMake(left, 0, self.contentView.bounds.size.width - left, self.contentView.bounds.size.height);
 }
 
 - (void)setPlaceholder:(NSString *)newPlaceholder {

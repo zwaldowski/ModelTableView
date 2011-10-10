@@ -17,6 +17,7 @@
 
 @synthesize placeholder, title, value, handler, textField;
 @synthesize image, editingAccessoryType, editHandler;
+@synthesize secure;
 
 #pragma mark - NSObject
 
@@ -43,6 +44,18 @@
     return cell;
 }
 
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder];
+    cell.secure = YES;
+    return cell;
+}
+
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder handler:handler];
+    cell.secure = YES;
+    return cell;
+}
+
 #pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
@@ -50,8 +63,6 @@
 
 	if (!cell)
 		cell = [[YXEditableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.reuseIdentifier];
-    
-    [cell.textField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEditingEvents];
 
     if (self.title) {
         cell.textLabel.text = self.title;
@@ -67,6 +78,9 @@
 	cell.placeholder = self.placeholder;
     if (self.value)
         cell.textField.text = value;
+    
+    cell.textField.clearsOnBeginEditing = self.secure;
+    cell.textField.secureTextEntry = self.secure;
     
     [cell.textField addTarget:self action:@selector(didChangeEdit:) forControlEvents:UIControlEventEditingChanged];
     [cell.textField addTarget:self action:@selector(didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];

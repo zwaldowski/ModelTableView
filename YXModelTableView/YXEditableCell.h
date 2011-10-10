@@ -14,10 +14,13 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, copy) YXSenderBlock handler;
+@property (nonatomic, getter = isSecure) BOOL secure;
 
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value handler:(YXSenderBlock)handler;
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder handler:(YXSenderBlock)handler;
 
 @end
