@@ -28,7 +28,7 @@
 - (void)addCell:(id <YXModelCell>)cell;
 - (void)removeCell:(id <YXModelCell>)cell;
 
-- (id <YXModelCell>)cellAtIndex:(NSInteger)index;
+- (id)cellAtIndex:(NSInteger)index;
 - (NSInteger)indexOfCell:(id <YXModelCell>)cell;
 - (void)removeAllCells;
 

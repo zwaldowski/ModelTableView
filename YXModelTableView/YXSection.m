@@ -46,7 +46,7 @@
 	[self.cells removeObject:cell];
 }
 
-- (id <YXModelCell>)cellAtIndex:(NSInteger)index {
+- (id)cellAtIndex:(NSInteger)index {
     return [self.cells objectAtIndex:index];
 }
 
