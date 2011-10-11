@@ -17,7 +17,7 @@
 
 @synthesize placeholder, title, value, handler, textField;
 @synthesize image, editingAccessoryType, editHandler;
-@synthesize secure;
+@synthesize secure, textFieldDelegate;
 
 #pragma mark - NSObject
 
@@ -27,8 +27,8 @@
     return cell;
 }
 
-+ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler {
-    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:handler];
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:handler textFieldDelegate:delegate];
     cell.secure = YES;
     return cell;
 }
@@ -40,25 +40,29 @@
 }
 
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder {
-    return [self cellWithTitle:title placeholder:placeholder value:nil onEdit:NULL onFinish:NULL];
+    return [self cellWithTitle:title placeholder:placeholder value:nil onEdit:NULL onFinish:NULL textFieldDelegate:nil];
 }
 
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler {
-    return [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:editHandler];
+    return [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:NULL textFieldDelegate:nil];
 }
 
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value {
-    return [self cellWithTitle:title placeholder:placeholder value:value onEdit:NULL onFinish:NULL];
+    return [self cellWithTitle:title placeholder:placeholder value:value onEdit:NULL onFinish:NULL textFieldDelegate:nil];
 }
 
-+ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler {
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate {
     YXEditableCell * cell = [YXEditableCell new];
     
     cell.title = title;
     cell.placeholder = placeholder;
     cell.value = value;
     cell.editHandler = editHandler;
-    cell.handler = handler;
+    if (editHandler && !handler)
+        cell.handler = editHandler;
+    else
+        cell.handler = handler;
+    cell.textFieldDelegate = delegate;
     
     return cell;
 }
@@ -93,7 +97,11 @@
     [cell.textField addTarget:self action:@selector(didChangeEdit:) forControlEvents:UIControlEventEditingChanged];
     [cell.textField addTarget:self action:@selector(didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     
+    cell.textField.delegate = self.textFieldDelegate;
+    
     self.textField = cell.textField;
+    
+    cell.cell = self;
 
 	return cell;
 }
@@ -126,6 +134,10 @@
 
 - (void)resignFirstResponder {
     [textField resignFirstResponder];
+}
+
+- (void)becomeFirstResponder {
+    [textField becomeFirstResponder];
 }
 
 @end

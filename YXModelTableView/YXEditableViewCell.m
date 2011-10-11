@@ -16,7 +16,7 @@
 
 static const CGFloat kTextFieldMargin = 10.0f;
 
-@synthesize textField;
+@synthesize textField, cell;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
@@ -67,6 +67,18 @@ static const CGFloat kTextFieldMargin = 10.0f;
 
 - (NSString *)placeholder {
 	return textField.placeholder;
+}
+
+@end
+
+@implementation UITextField (YXEditableViewCell)
+
+- (YXEditableCell *)cell {
+    if (![self.superview respondsToSelector:@selector(cell)])
+        return nil;
+    
+    YXEditableViewCell *cell = (YXEditableViewCell *)self.superview;
+    return cell.cell;
 }
 
 @end

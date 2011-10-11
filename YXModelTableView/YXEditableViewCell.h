@@ -6,9 +6,12 @@
 //  Copyright 2010 Яндекс. All rights reserved.
 //
 
+@class YXEditableCell;
+
 @interface YXEditableViewCell : UITableViewCell
 
 @property (nonatomic, copy) NSString *placeholder;
 @property (nonatomic, strong, readonly) UITextField *textField;
+@property (nonatomic, unsafe_unretained) YXEditableCell *cell;
 
 @end

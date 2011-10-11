@@ -15,15 +15,23 @@
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, copy) YXSenderBlock handler;
 @property (nonatomic, getter = isSecure) BOOL secure;
+@property (nonatomic, assign) id <UITextFieldDelegate> textFieldDelegate;
 
 + (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
 + (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler;
-+ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler;
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value;
-+ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate;
 
 - (void)resignFirstResponder;
+- (void)becomeFirstResponder;
+
+@end
+
+@interface UITextField (YXEditableViewCell)
+
+@property (nonatomic, readonly) YXEditableCell *cell;
 
 @end
