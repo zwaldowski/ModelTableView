@@ -85,9 +85,10 @@
 	cell.placeholder = self.placeholder;
     if (self.value)
         cell.textField.text = value;
-    
+
     cell.textField.clearsOnBeginEditing = self.secure;
     cell.textField.secureTextEntry = self.secure;
+    cell.textField.returnKeyType = UIReturnKeyNext;
     
     [cell.textField addTarget:self action:@selector(didChangeEdit:) forControlEvents:UIControlEventEditingChanged];
     [cell.textField addTarget:self action:@selector(didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
