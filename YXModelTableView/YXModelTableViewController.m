@@ -61,6 +61,13 @@
     [super viewDidUnload];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        return YES;
+    else
+        return (toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [self.tableView reloadData];
     
