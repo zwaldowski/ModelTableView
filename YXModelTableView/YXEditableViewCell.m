@@ -7,6 +7,7 @@
 //
 
 #import "YXEditableViewCell.h"
+#import "YXEditableCell.h"
 
 @interface YXEditableViewCell()
 @property (nonatomic, strong, readwrite) UITextField *textField;
@@ -37,6 +38,7 @@ static const CGFloat kTextFieldMargin = 10.0f;
 - (void)prepareForReuse {
     [super prepareForReuse];
     [self.textField removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    self.cell.value = self.textField.text;
 }
 
 - (void)layoutSubviews {
@@ -77,8 +79,7 @@ static const CGFloat kTextFieldMargin = 10.0f;
     if (![self.superview respondsToSelector:@selector(cell)])
         return nil;
     
-    YXEditableViewCell *cell = (YXEditableViewCell *)self.superview;
-    return cell.cell;
+    return [(id)self.superview cell];
 }
 
 @end

@@ -53,11 +53,12 @@
 
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate {
     YXEditableCell * cell = [YXEditableCell new];
-    
+
     cell.title = title;
     cell.placeholder = placeholder;
     cell.value = value;
     cell.editHandler = editHandler;
+    
     if (editHandler && !handler)
         cell.handler = editHandler;
     else
@@ -87,10 +88,11 @@
     cell.imageView.image = self.image;
     
 	cell.placeholder = self.placeholder;
+    NSLog(@"%@", self.value);
+    
     if (self.value)
-        cell.textField.text = value;
+        cell.textField.text = self.value;
 
-    cell.textField.clearsOnBeginEditing = self.secure;
     cell.textField.secureTextEntry = self.secure;
     cell.textField.returnKeyType = UIReturnKeyNext;
     
@@ -124,12 +126,10 @@
 
 #pragma mark - Properties
 
-- (void)setValue:(NSString *)aValue {
-    textField.text = aValue;
-}
-
 - (NSString *)value {
-    return textField.text;
+    if (textField)
+        return textField.text;
+    return value;
 }
 
 - (void)resignFirstResponder {
