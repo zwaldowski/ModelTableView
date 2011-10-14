@@ -88,10 +88,7 @@
     cell.imageView.image = self.image;
     
 	cell.placeholder = self.placeholder;
-    NSLog(@"%@", self.value);
-    
-    if (self.value)
-        cell.textField.text = self.value;
+    cell.textField.text = self.value;
 
     cell.textField.secureTextEntry = self.secure;
     cell.textField.returnKeyType = UIReturnKeyNext;

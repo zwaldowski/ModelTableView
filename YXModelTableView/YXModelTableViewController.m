@@ -280,7 +280,7 @@
         CGRect newFrame = self.tableView.frame;
         CGRect keyboardFrame = [self.view convertRect:keyboardEndFrame toView:nil];
         
-        newFrame.size.height -= keyboardFrame.size.height * (up? 1 : -1);
+        newFrame.size.height = self.view.bounds.size.height - (keyboardFrame.size.height * (up ? 1 : -1));
         self.tableView.frame = newFrame;
     } completion:NULL];
 }
