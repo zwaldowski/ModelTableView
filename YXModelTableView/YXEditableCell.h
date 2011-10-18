@@ -19,7 +19,10 @@
 
 + (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
 + (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler;
-+ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate;
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value;
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate;
+
+
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler;
 + (id)cellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value;

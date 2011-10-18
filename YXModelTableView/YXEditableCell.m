@@ -27,14 +27,20 @@
     return cell;
 }
 
-+ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate {
-    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder value:nil onEdit:editHandler onFinish:handler textFieldDelegate:delegate];
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder onEdit:editHandler];
     cell.secure = YES;
     return cell;
 }
 
-+ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder onEdit:(YXSenderBlock)editHandler {
-    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder onEdit:editHandler];
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder value:value];
+    cell.secure = YES;
+    return cell;
+}
+
++ (id)secureCellWithTitle:(NSString *)title placeholder:(NSString *)placeholder value:(NSString *)value onEdit:(YXSenderBlock)editHandler onFinish:(YXSenderBlock)handler textFieldDelegate:(id <UITextFieldDelegate>)delegate {
+    YXEditableCell *cell = [self cellWithTitle:title placeholder:placeholder value:value onEdit:editHandler onFinish:handler textFieldDelegate:delegate];
     cell.secure = YES;
     return cell;
 }
