@@ -8,9 +8,14 @@
 
 #import "YXDisclosureCell.h"
 
+@interface YXDisclosureCell() {
+    BOOL subtitle;
+}
+@end
+
 @implementation YXDisclosureCell
 
-@synthesize image, title, description, handler;
+@synthesize height, image, title, description, handler;
 
 #pragma mark - NSObject
 
@@ -27,7 +32,7 @@
 }
 
 + (id)cellWithTitle:(NSString *)title description:(NSString *)description handler:(YXSenderBlock)handler {
-	YXDisclosureCell * cell = [YXDisclosureCell new];
+	YXDisclosureCell *cell = [YXDisclosureCell new];
     
 	cell.title = title;
 	cell.description = description;
@@ -36,10 +41,16 @@
 	return cell;
 }
 
++ (id)cellWithTitle:(NSString *)title subtitle:(NSString *)subtitle handler:(YXSenderBlock)handler {
+    YXDisclosureCell *cell = [self cellWithTitle:title description:subtitle handler:handler];
+    cell->subtitle = YES;
+    return cell;
+}
+
 #pragma mark - YXModelCell
 
 - (UITableViewCell *)tableViewCellWithReusableCell:(UITableViewCell *)reusableCell {
-	UITableViewCellStyle style = (self.description) ? UITableViewCellStyleValue1 : UITableViewCellStyleDefault;
+	UITableViewCellStyle style = self.description ? (subtitle ? UITableViewCellStyleSubtitle : UITableViewCellStyleValue1) : UITableViewCellStyleDefault;
 
 	UITableViewCell *cell = reusableCell;
 	if (!cell)
@@ -65,8 +76,10 @@
 }
 
 - (NSString *)reuseIdentifier {
-    if (self.description)
+    if (self.description && !subtitle)
         return @"YXDetailCell";
+    else if (subtitle)
+        return @"YXSubtitleCell";
     return nil;
 }
 

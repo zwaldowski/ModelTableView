@@ -12,7 +12,7 @@
 @property (nonatomic, readonly) NSString *reuseIdentifier;
 
 @optional
-@property (nonatomic, readonly) CGFloat height;
+@property (nonatomic) CGFloat height;
 @property (nonatomic, strong) UIImage *image;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath;

@@ -18,5 +18,6 @@
 + (id)cellWithTitle:(NSString *)title description:(NSString *)description;
 + (id)cellWithTitle:(NSString *)title handler:(YXSenderBlock)handler;
 + (id)cellWithTitle:(NSString *)title description:(NSString *)description handler:(YXSenderBlock)handler;
++ (id)cellWithTitle:(NSString *)title subtitle:(NSString *)subtitle handler:(YXSenderBlock)handler;
 
 @end
