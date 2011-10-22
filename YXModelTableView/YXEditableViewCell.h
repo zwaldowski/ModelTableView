@@ -12,6 +12,6 @@
 
 @property (nonatomic, copy) NSString *placeholder;
 @property (nonatomic, strong, readonly) UITextField *textField;
-@property (nonatomic, unsafe_unretained) YXEditableCell *cell;
+@property (nonatomic, assign) YXEditableCell *cell;
 
 @end
