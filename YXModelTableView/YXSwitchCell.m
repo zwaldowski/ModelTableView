@@ -8,6 +8,10 @@
 
 #import "YXSwitchCell.h"
 
+@interface YXSwitchCell()
+- (void)_switchControlChanged:(UISwitch *)switchControl;
+@end
+
 @implementation YXSwitchCell
 
 @synthesize title, initialValueGetter, handler, togglesOnSelect;
@@ -66,7 +70,7 @@
         UISwitch *theSwitch = (UISwitch *)theCell.accessoryView;
         BOOL set = !theSwitch.on;
         [theSwitch setOn:set animated:YES];
-        [self performSelector:@selector(switchControlChanged:) withObject:theSwitch];
+        [self performSelector:@selector(_switchControlChanged:) withObject:theSwitch];
 	}
 }
 

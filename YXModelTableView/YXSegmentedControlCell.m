@@ -9,6 +9,10 @@
 #import "YXSegmentedControlCell.h"
 #import "YXSegmentedControlViewCell.h"
 
+@interface YXSegmentedControlCell()
+- (void)_segmentedControlDidChangeValue:(UISegmentedControl *)segmentedControl;
+@end
+
 @implementation YXSegmentedControlCell
 
 @synthesize image, segmentedControlItems, handler, initialValueGetter;

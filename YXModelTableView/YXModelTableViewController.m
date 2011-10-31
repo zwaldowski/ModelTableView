@@ -12,7 +12,9 @@
 @property (nonatomic, readwrite, strong) UITableView *tableView;
 @property (nonatomic, readwrite, strong) NSIndexPath *lastSelectedIndexPath;
 @property (nonatomic) UITableViewStyle tableViewStyle;
-
+- (void)_deselectSelectedRow:(UITableView *)aTableView;
+- (void)_keyboardWillShow:(NSNotification *)notification;
+- (void)_keyboardWillHide:(NSNotification *)notification;
 @end
 
 @implementation YXModelTableViewController
@@ -71,8 +73,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [super viewWillAppear:animated];
 }
@@ -227,10 +229,9 @@
         [cell tableView:aTableView accessoryButtonTappedForRowWithIndexPath:indexPath];
 }
 
-#pragma mark -
-#pragma mark Keyboard management
+#pragma mark - Keyboard management
 
-- (void)keyboardChanged:(NSNotification *)notification up:(BOOL)up {
+- (void)_keyboardChanged:(NSNotification *)notification up:(BOOL)up {
     // don't move if search display controller is active
     if (self.searchDisplayController.active)
         return;
@@ -285,12 +286,12 @@
     } completion:NULL];
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification {
-    [self keyboardChanged:notification up:YES];
+- (void)_keyboardWillShow:(NSNotification *)notification {
+    [self _keyboardChanged:notification up:YES];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification {
-    [self keyboardChanged:notification up:NO];
+- (void)_keyboardWillHide:(NSNotification *)notification {
+    [self _keyboardChanged:notification up:NO];
 }
 
 @end

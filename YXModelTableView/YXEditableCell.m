@@ -11,6 +11,8 @@
 
 @interface YXEditableCell ()
 @property (nonatomic, strong) UITextField *textField;
+- (void)_didEndEditing:(UITextField *)aTextField;
+- (void)_didChangeEditing:(UITextField *)aTextField;
 @end
 
 @implementation YXEditableCell
@@ -99,8 +101,8 @@
     cell.textField.secureTextEntry = self.secure;
     cell.textField.returnKeyType = UIReturnKeyNext;
     
-    [cell.textField addTarget:self action:@selector(didChangeEdit:) forControlEvents:UIControlEventEditingChanged];
-    [cell.textField addTarget:self action:@selector(didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    [cell.textField addTarget:self action:@selector(_didChangeEditing:) forControlEvents:UIControlEventEditingChanged];
+    [cell.textField addTarget:self action:@selector(_didEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     
     cell.textField.delegate = self.textFieldDelegate;
     
@@ -117,12 +119,12 @@
 
 #pragma mark - Delegates
 
-- (void)didEndEditing:(UITextField *)aTextField {
+- (void)_didEndEditing:(UITextField *)aTextField {
     YXSenderBlock block = self.handler;
     if (block) block(self);
 }
 
-- (void)didChangeEdit:(UITextField *)aTextField {
+- (void)_didChangeEditing:(UITextField *)aTextField {
     YXSenderBlock block = self.editHandler;
     if (block) block(self);
 }
